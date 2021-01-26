@@ -1,0 +1,129 @@
+/* .pie-chart{
+    width: 20rem;
+} */
+
+.landing-info-container{
+    margin-top: 40px;
+    margin-left: 0.5rem;
+}
+.edit-icon{
+    width: 1rem;
+    height: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+.landing-info-container h1 {
+    margin: 0;
+}
+
+.detail {
+    width: 100%;
+    margin: 0;
+}
+
+.landing {
+    justify-content: space-around;
+    overflow-x: auto;
+}
+
+.landing-table-container {
+    overflow-x: auto;
+    width: 93%;
+}
+
+.info-wrapper {
+    display: flex;
+}
+
+.landings-header {
+    font-size: 1.8rem;
+}
+
+.landing-info-container p {
+    margin-top: 0.5rem;
+}
+
+.anchor-img {
+    height: 3rem;
+    margin-left: 2.4rem;
+    margin-top: 40px;
+    padding-top: 0.5rem;
+}
+
+.pie-chart {
+    margin-bottom: 2rem;
+}
+.offload-edit {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 25%;
+    border-radius: 1rem;
+    height: 2rem;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(46,74,117,0.5);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(46,74,117,0.5);
+    box-shadow: 0px 0px 5px 0px rgba(46,74,117,0.5);
+    transition: all 0.2s;
+    margin: 0.5rem;
+    padding: 0.2rem;
+    justify-content: left;
+    align-items: center;
+    width: 97%;
+    flex-wrap: wrap;
+    overflow:hidden
+}
+
+.offload-edit-item {
+padding: 0.3rem;
+}
+.offload-edit.closed {
+    width: 3em;
+}
+.offload-arrow {
+    transform: rotate(90deg);
+}
+
+@media only screen and (max-width: 965px) {
+    .offload-edit.open{
+        height: 5rem;
+        width: 95%;
+
+    }
+}
+
+@media only screen and (max-width: 390px) {
+    .offload-edit.open{
+        height: 7rem;
+        width: 95%;
+    }
+}
+@media only screen and (max-width: 310px) {
+    .offload-edit.open{
+        height: 9rem;
+    }
+}
+
+@media only screen and (max-width: 730px) {
+    .loader-container {
+        justify-content: center;
+    }
+
+    .placeholder-item.mapload {
+        margin: 0;
+        margin-top: 3rem;
+    }
+}
+
+@media only screen and (max-width: 515px) {
+    .landing-info-container{
+        margin-bottom: 0;
+    }
+
+    .placeholder-item.header {
+        width: 260px;
+    }
+
+    .placeholder-info-container {
+        align-items: center;
+    }
+}
+

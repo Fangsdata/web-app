@@ -1,0 +1,30 @@
+
+.not-found-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.not-found-img {
+    width: 250px;
+    z-index: -1;
+}
+
+.not-found-header {
+    font-weight: 700;
+    margin-top: 1rem;
+}
+
+.not-found-btn {
+    background-color: #2B59C3;
+    color: white;
+    padding: 0.7rem;
+    border-radius: 2rem;
+    margin-top: 1rem;
+}
+
+.not-found-btn:hover {
+    background-color: #254aa1;
+    text-decoration: none;
+}
