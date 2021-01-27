@@ -9,7 +9,7 @@ import filterImg from './filter_list-24px.svg';
 import UpArrowImg from './arrow_drop_up-24px.svg';
 import DownArrowImg from './arrow_drop_down-24px.svg';
 
-const OffloadDetails = ({ offloadId }) => {
+const OffloadDetails = ({ date, registrationId }) => {
   const [chartData, setChartData] = useState(
     {
       labels: ['NON'],
@@ -153,7 +153,7 @@ const OffloadDetails = ({ offloadId }) => {
       setPieSize(window.innerWidth * 0.9);
     }
     setOffloadLoad(false);
-    fetch(`https://fangsdata-api.herokuapp.com/api/offloads/details/${offloadId}`)
+    fetch(`https://fangsdata-api.herokuapp.com/api/offloads/details/date/${date}/${registrationId}`)
       .then((res) => res.json())
       .then((json) => {
         setOffloadDetails(json);

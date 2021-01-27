@@ -134,6 +134,8 @@ class BoatDetails extends React.Component {
       builtYear,
       enginePower,
       fishingGear,
+      registrationId,
+      radioSignalId
     } = boat;
 
     const { boatname } = this.props;
@@ -218,6 +220,7 @@ class BoatDetails extends React.Component {
           : <></>}
         <LandingsTable
           landings={landings}
+          registrationId={registrationId}
           landingNo={(pageNo - 1) * resultCount}
           boatOffloadLoaded={boatOffloadLoaded}
           boatOffloadError={boatOffloadError}
