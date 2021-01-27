@@ -159,7 +159,12 @@ class BoatDetails extends React.Component {
                     <div className="boat-info">
                       <p className="boat-header">{ name !== '' ? normalizeCase(name) : boatname }</p>
                       <p className="boat-details">
-
+                        { `Radiokallesignal: ${radioSignalId}` }
+                      </p>
+                      <p className="boat-details">
+                        { `Registreringsmerke: ${registrationId}` }
+                      </p>
+                      <p className="boat-details">
                         { `Lengde: ${normalizeLength(length)}` }
                       </p>
                       <p className="boat-details">
@@ -178,7 +183,6 @@ class BoatDetails extends React.Component {
                         { `Motor kraft: ${enginePower !== 0 ? `${enginePower} hp` : 'ikke registrert'}` }
                       </p>
                       <p className="boat-details">
-
                         { `Redskap: ${fishingGear !== '' ? fishingGear : 'ikke registrer`'}`}
                       </p>
                       <br />
