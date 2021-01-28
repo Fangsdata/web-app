@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getOffloads } from '../../services/OffloadService';
+import { getOffloads,getValue } from '../../services/OffloadService';
 import OffloadsList from '../OffloadsList';
 import { normalizeMonth } from '../../services/TextTools';
 
@@ -35,6 +35,7 @@ class FrontPage extends React.Component {
       tableLoaded0: true,
       offLoads1: await getOffloads({ count: [10], fishingGear: ['Trål'] }),
       tableLoaded1: true,
+      upDatedOn: await getValue('last_updated'),
     });
     this.setState({
       offLoads2: await getOffloads({ count: [10], fishingGear: ['Snurrevad'] }),
@@ -63,6 +64,7 @@ class FrontPage extends React.Component {
       tableLoaded4,
       tableError,
       month,
+      upDatedOn
     } = this.state;
     return (
       <div className="front-page">
@@ -77,6 +79,7 @@ class FrontPage extends React.Component {
                       <OffloadsList
                         offloads={offLoads0}
                         title={"Top 10 krokredskap landing i " + normalizeMonth(month)}
+                        updatedOn={`Oppdatert ${upDatedOn}`}
                       />
                       <Link to="/topoffloads?redskap=krokredskap"><div className="more-btn">Se Mer</div></Link>
                     </div>
@@ -112,6 +115,7 @@ class FrontPage extends React.Component {
                       <OffloadsList
                         offloads={offLoads1}
                         title={"Top 10 trål landing i " +  normalizeMonth(month)}
+                        updatedOn={`Oppdatert ${upDatedOn}`}
                       />
                       <Link to="/topoffloads?redskap=trål"><div className="more-btn">Se Mer</div></Link>
                     </div>
@@ -147,6 +151,7 @@ class FrontPage extends React.Component {
                       <OffloadsList
                         offloads={offLoads2}
                         title={"Top 10 snurrevad landing i " +  normalizeMonth(month) }
+                        updatedOn={`Oppdatert ${upDatedOn}`}
                       />
                       <Link to="/topoffloads?redskap=snurrevad"><div className="more-btn">Se Mer</div></Link>
                     </div>
@@ -182,6 +187,7 @@ class FrontPage extends React.Component {
                       <OffloadsList
                         offloads={offLoads3}
                         title={"Top 10 garn landing i " + normalizeMonth(month) }
+                        updatedOn={`Oppdatert ${upDatedOn}`}
                       />
                       <Link to="/topoffloads?redskap=garn"><div className="more-btn">Se Mer</div></Link>
                     </div>
@@ -217,6 +223,7 @@ class FrontPage extends React.Component {
                       <OffloadsList
                         offloads={offLoads4}
                         title={"Top 10 pelagisk landing i " + normalizeMonth(month) }
+                        updatedOn={`Oppdatert ${upDatedOn}`}
                       />
                       <Link to="/topoffloads?redskap=pelagisk"><div className="more-btn">Se Mer</div></Link>
                     </div>

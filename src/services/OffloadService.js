@@ -38,6 +38,13 @@ const getBoats = async (radioSignal = '') => {
   return json;
 };
 
+const getValue = async (key = '') => {
+  const resp = await fetch(`${OFFLOADAPI}/key/${key}`);
+  console.log(resp)
+  const json = await resp.text();
+  return json;
+}
+
 const getOffloadsTest = async () => {
   const resp = await fetch(`${OFFLOADAPI}/offloads?fishingGear=Garn&Count=5`);
   const json = await resp.json();
@@ -48,4 +55,5 @@ export {
   getOffloads,
   getBoats,
   getOffloadsTest,
+  getValue
 };

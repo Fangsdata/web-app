@@ -3,7 +3,7 @@ import PropTypes, { number } from 'prop-types';
 import OffladsListItem from '../OffladsListItem';
 
 
-const OffladsList = ({ offloads, title,pageNo }) => (
+const OffladsList = ({ offloads, title,pageNo, updatedOn }) => (
   <div className="offload-table">
     <div className="offload-header">{title}</div>
     <OffladsListItem
@@ -22,7 +22,9 @@ const OffladsList = ({ offloads, title,pageNo }) => (
         item={item}
         index={(index + 1) + (pageNo *  offloads.length) - offloads.length}
       />
-    ))}
+    ))
+    }
+    <div className="offload-updated-time"><p>{updatedOn}</p></div>
   </div>
 );
 
@@ -47,13 +49,15 @@ OffladsList.propTypes = {
     trips: PropTypes.number,
   })),
   title: PropTypes.string,
+  updatedOn: PropTypes.string,
   pageNo: number
 };
 
 OffladsList.defaultProps = {
   title: '',
   offloads: [],
-  pageNo: 1
+  pageNo: 1,
+  updatedOn: '',
 };
 
 

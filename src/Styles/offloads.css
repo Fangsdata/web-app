@@ -2,7 +2,14 @@
 .offload-table {
     margin-bottom: 5rem;
 }
-
+.offload-updated-time {
+    display: flex;
+    font-size: 0.8em;
+    justify-content: center;
+    color: #a3a3a3;
+    height: 0;
+    padding-top: 5px;
+}
 .offload-row {
     display: flex;
     flex-wrap: wrap;

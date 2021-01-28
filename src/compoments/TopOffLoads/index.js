@@ -1,5 +1,5 @@
 import React from 'react';
-import { getOffloads } from '../../services/OffloadService';
+import { getOffloads,getValue } from '../../services/OffloadService';
 import OffloadsList from '../OffloadsList';
 import FilterContainer from '../FiltersContainer';
 import { normalizeMonth,generateObjectFromQueryParameters, generateQueryParamFromObject, translateGroupNames } from '../../services/TextTools';
@@ -77,8 +77,10 @@ class TopOffLoads extends React.Component {
     const today = new Date();
     const {filter} = this.state;
     
+
     this.setState({ selectedMonth: today.getMonth() + 1, selectedYear: today.getFullYear() });
-    this.setState({ offLoads: await getOffloads(filter), topOffloadsLoaded: true });
+    this.setState({ offLoads: await getOffloads(filter), topOffloadsLoaded: true});
+    this.setState({ upDatedOn: await getValue('last_updated') })
   }
 
   async inputEvent(event) {
@@ -174,7 +176,7 @@ class TopOffLoads extends React.Component {
 
   render() {
     const {
-      topOffloadsLoaded, topOfflodError, selectedMonth, selectedYear, offLoads, allFilters, filter
+      topOffloadsLoaded, topOfflodError, selectedMonth, selectedYear, offLoads, allFilters, filter,upDatedOn
     } = this.state;
     return (
       <div>
@@ -194,6 +196,7 @@ class TopOffLoads extends React.Component {
                     offloads={offLoads}
                     pageNo={filter.pageNo[0]}
                     title={`Største landing i ${normalizeMonth(selectedMonth)} ${selectedYear}`}
+                    updatedOn={`Oppdatert ${upDatedOn}`}
                   />
                 )
                 : <div className="loader">Loading...</div>}
