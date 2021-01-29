@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import icon from './search-24px.svg';
 import { OFFLOADAPI } from '../../Constants';
@@ -10,9 +10,6 @@ const SearchBar = () => {
   const [foundBoats, setFoundBoats] = useState([]);
   const [isSearchOpen, setSearchStatus] = useState(false);
   
-
-  const StartSearch = () => {};
-
   const UpdateQuickSearch = (searchTerm) => {
     if (searchTerm.length > 2) {
       fetch(`${OFFLOADAPI}/search/boats/${searchTerm}`)
@@ -25,6 +22,8 @@ const SearchBar = () => {
     }
   };
 
+  const history = useHistory();
+            
   const node = useRef();
 
   useEffect(() => {
@@ -57,15 +56,20 @@ const SearchBar = () => {
           }}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
-              StartSearch();
+              history.push(`/search/${search}`);
+              updateSearch(''); 
+              setSearchStatus(true);
             }
           }}
           type="text"
         />
         <button
-          className="search-btn"
-          onClick={() => StartSearch()}
-        >
+          onClick={()=>{               
+            updateSearch(''); 
+            setSearchStatus(true);
+          }}
+          className="search-btn">
+
           <Link to={`/search/${search}`}><img className="search-icon" src={icon} alt="" /></Link>
         </button>
         { foundBoats.length !== 0 && !isSearchOpen
