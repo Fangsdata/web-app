@@ -150,13 +150,3 @@
         margin-right: 3.5rem;
     }
 }
-
-@media only screen and (max-width: 400px) {
-    .search-inp {
-        color: transparent;
-    }
-
-    .search-btn {
-        padding-right: 3rem;
-    }
-}
