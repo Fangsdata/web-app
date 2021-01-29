@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { getOffloads,getValue } from '../../services/OffloadService';
 import OffloadsList from '../OffloadsList';
 import { normalizeMonth } from '../../services/TextTools';
+import { th } from 'date-fns/locale';
 
 // https://fangsdata-api.herokuapp.com/api/offloads?fishingGear=Garn&Count=5
 
@@ -29,7 +30,32 @@ class FrontPage extends React.Component {
 
 
   async componentDidMount() {
-    this.setState({
+
+    Promise.all([
+      getOffloads({ count: [10], fishingGear: ['Krokredskap'] }),
+      getOffloads({ count: [10], fishingGear: ['Trål'] }),
+      getOffloads({ count: [10], fishingGear: ['Snurrevad'] }),
+      getOffloads({ count: [10], fishingGear: ['Garn'] }),
+      getOffloads({ count: [10], fishingGear: ['Pelagisk'] }),
+      getValue('last_updated')
+    ]).then((val => {
+      this.setState({
+        offLoads0: val[0],
+        offLoads1: val[1],
+        offLoads2: val[2],
+        offLoads3: val[3],
+        offLoads4: val[4],
+        upDatedOn: val[5],
+        tableLoaded0: true,
+        tableLoaded1: true,
+        tableLoaded2: true,
+        tableLoaded3: true,
+        tableLoaded4: true,
+
+      })
+    }))
+
+   /* this.setState({
       offLoads0:
           await getOffloads({ count: [10], fishingGear: ['Krokredskap'] }),
       tableLoaded0: true,
@@ -47,7 +73,7 @@ class FrontPage extends React.Component {
     this.setState({
       offLoads4: await getOffloads({ count: [10], fishingGear: ['Pelagisk'] }),
       tableLoaded4: true,
-    });
+    });*/
   }
 
   render() {
