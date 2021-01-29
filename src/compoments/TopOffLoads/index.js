@@ -76,9 +76,22 @@ class TopOffLoads extends React.Component {
 
     const today = new Date();
     const {filter} = this.state;
-    
+   
+    Promise.all([
+      getOffloads(filter),
+      getValue('last_updated')
+    ]).then(resp =>{
+      this.setState({
+        offloads: resp[0],
+        upDatedOn: resp[1],
+      });
+      this.setState({
+        topOffloadsLoaded: true,
+        selectedMonth: today.getMonth() + 1, 
+        selectedYear: today.getFullYear()
+      });
+    })
 
-    this.setState({ selectedMonth: today.getMonth() + 1, selectedYear: today.getFullYear() });
     this.setState({ offLoads: await getOffloads(filter), topOffloadsLoaded: true});
     this.setState({ upDatedOn: await getValue('last_updated') })
   }

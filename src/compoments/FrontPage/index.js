@@ -54,26 +54,6 @@ class FrontPage extends React.Component {
 
       })
     }))
-
-   /* this.setState({
-      offLoads0:
-          await getOffloads({ count: [10], fishingGear: ['Krokredskap'] }),
-      tableLoaded0: true,
-      offLoads1: await getOffloads({ count: [10], fishingGear: ['Trål'] }),
-      tableLoaded1: true,
-      upDatedOn: await getValue('last_updated'),
-    });
-    this.setState({
-      offLoads2: await getOffloads({ count: [10], fishingGear: ['Snurrevad'] }),
-      tableLoaded2: true,
-      offLoads3: await getOffloads({ count: [10], fishingGear: ['Garn'] }),
-      tableLoaded3: true,
-    });
-
-    this.setState({
-      offLoads4: await getOffloads({ count: [10], fishingGear: ['Pelagisk'] }),
-      tableLoaded4: true,
-    });*/
   }
 
   render() {

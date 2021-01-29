@@ -9,6 +9,7 @@ const SearchBar = () => {
   const [search, updateSearch] = useState('');
   const [foundBoats, setFoundBoats] = useState([]);
   const [isSearchOpen, setSearchStatus] = useState(false);
+  
 
   const StartSearch = () => {};
 
@@ -65,7 +66,7 @@ const SearchBar = () => {
           className="search-btn"
           onClick={() => StartSearch()}
         >
-          <img className="search-icon" src={icon} alt="" />
+          <Link to={`/search/${search}`}><img className="search-icon" src={icon} alt="" /></Link>
         </button>
         { foundBoats.length !== 0 && !isSearchOpen
           ? (
