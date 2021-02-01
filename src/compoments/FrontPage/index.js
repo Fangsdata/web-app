@@ -31,7 +31,11 @@ class FrontPage extends React.Component {
       tableLoaded2: false,
       tableLoaded3: false,
       tableLoaded4: false,
-      tableError: false,
+      tableTitle0: "Top 10 krokredskap landing i " + normalizeMonth(month),
+      tableTitle1: "Top 10 trål landing i " + normalizeMonth(month),
+      tableTitle2: "Top 10 snurrevad landing i " + normalizeMonth(month),
+      tableTitle3: "Top 10 garn landing i " + normalizeMonth(month),
+      tableTitle4: "Top 10 pelagisk landing i " + normalizeMonth(month),
       month: month,
       year: year,
       monthOrYear:[ { title: 'måned', checkState: true, value: 'month' }, { title: 'år', checkState: false, value: 'year' }]
@@ -44,6 +48,13 @@ class FrontPage extends React.Component {
     { count: [10], fishingGear: ['Snurrevad'] },
     { count: [10], fishingGear: ['Garn'] },
     { count: [10], fishingGear: ['Pelagisk'] },
+  ],
+  titles = [
+     "Top 10 krokredskap landing",
+     "Top 10 trål landing",
+     "Top 10 snurrevad landing", 
+     "Top 10 garn landing",
+     "Top 10 pelagisk landing",
   ] ) {
     this.setState({
       tableLoaded0: false,
@@ -51,6 +62,11 @@ class FrontPage extends React.Component {
       tableLoaded2: false,
       tableLoaded3: false,
       tableLoaded4: false,
+      tableTitle0: titles[0],
+      tableTitle1: titles[1],
+      tableTitle2: titles[2],
+      tableTitle3: titles[3],
+      tableTitle4: titles[4], 
     })
     Promise.all([
       getOffloads(tables[0]),
@@ -87,7 +103,14 @@ class FrontPage extends React.Component {
         { count: [10], fishingGear: ['Snurrevad'], month: [`${month},${month}`],year:[`${year},${year}`] },
         { count: [10], fishingGear: ['Garn'], month: [`${month},${month}`],year:[`${year},${year}`] },
         { count: [10], fishingGear: ['Pelagisk'], month: [`${month},${month}`],year:[`${year},${year}`] },
-      ]
+      ],
+      [
+        "Top 10 krokredskap landing i " + normalizeMonth(month),
+        "Top 10 trål landing i " + normalizeMonth(month),
+        "Top 10 snurrevad landing i " + normalizeMonth(month),
+        "Top 10 garn landing i " + normalizeMonth(month),
+        "Top 10 pelagisk landing i " + normalizeMonth(month),
+     ]   
     ); 
   }
 
@@ -110,7 +133,14 @@ class FrontPage extends React.Component {
           { count: [10], fishingGear: ['Snurrevad'], year:[`${year},${year}`], month:['1,12'] },
           { count: [10], fishingGear: ['Garn'], year:[`${year},${year}`], month:['1,12'] },
           { count: [10], fishingGear: ['Pelagisk'], year:[`${year},${year}`], month:['1,12'] },
-        ]);
+        ],
+        [
+          "Top 10 krokredskap landing i " + year,
+          "Top 10 trål landing i " + year,
+          "Top 10 snurrevad landing i " + year,
+          "Top 10 garn landing i " + year,
+          "Top 10 pelagisk landing i " + year,
+       ] );
       }
       else { // month
         this.populateTables(
@@ -120,7 +150,14 @@ class FrontPage extends React.Component {
             { count: [10], fishingGear: ['Snurrevad'], month: [`${month},${month}`] },
             { count: [10], fishingGear: ['Garn'], month: [`${month},${month}`] },
             { count: [10], fishingGear: ['Pelagisk'], month: [`${month},${month}`] },
-          ]
+          ],
+          [
+            "Top 10 krokredskap landing i " + normalizeMonth(month),
+            "Top 10 trål landing i " + normalizeMonth(month),
+            "Top 10 snurrevad landing i " + normalizeMonth(month),
+            "Top 10 garn landing i " + normalizeMonth(month),
+            "Top 10 pelagisk landing i " + normalizeMonth(month),
+         ]
         );
       }
     });
@@ -138,7 +175,11 @@ class FrontPage extends React.Component {
       tableLoaded2,
       tableLoaded3,
       tableLoaded4,
-      tableError,
+      tableTitle0,
+      tableTitle1,
+      tableTitle2,
+      tableTitle3,
+      tableTitle4,
       month,
       upDatedOn,
       monthOrYear 
@@ -154,192 +195,83 @@ class FrontPage extends React.Component {
           cssFilterContainer = 'front-list-time-period'
         />
       <div className="front-page">
-
-        {!tableError
-          ? (
-            <>
-              { tableLoaded0
-                ? (
-                  <>
-                    <div className="front-list-container">
-                      <OffloadsList
-                        offloads={offLoads0}
-                        title={"Top 10 krokredskap landing i " + normalizeMonth(month)}
-                        updatedOn={`Oppdatert ${upDatedOn}`}
-                      />
-                      <Link to="/topoffloads?redskap=krokredskap"><div className="more-btn">Se Mer</div></Link>
-                    </div>
-                  </>
-                )
-                : (
-                  <div className="front-loading-container">
-                    <div className="offload-header" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item more" />
-                  </div>
-                )}
-            </>
-          )
-          : <><p>here was an error</p></>}
-        {!tableError
-          ? (
-            <>
-              { tableLoaded1
-                ? (
-                  <>
-                    <div className="front-list-container">
-                      <OffloadsList
-                        offloads={offLoads1}
-                        title={"Top 10 trål landing i " +  normalizeMonth(month)}
-                        updatedOn={`Oppdatert ${upDatedOn}`}
-                      />
-                      <Link to="/topoffloads?redskap=trål"><div className="more-btn">Se Mer</div></Link>
-                    </div>
-                  </>
-                )
-                : (
-                  <div className="front-loading-container">
-                    <div className="offload-header" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item more" />
-                  </div>
-                )}
-            </>
-          )
-          : <><p>here was an error</p></>}
-        {!tableError
-          ? (
-            <>
-              { tableLoaded2
-                ? (
-                  <>
-                    <div className="front-list-container">
-                      <OffloadsList
-                        offloads={offLoads2}
-                        title={"Top 10 snurrevad landing i " +  normalizeMonth(month) }
-                        updatedOn={`Oppdatert ${upDatedOn}`}
-                      />
-                      <Link to="/topoffloads?redskap=snurrevad"><div className="more-btn">Se Mer</div></Link>
-                    </div>
-                  </>
-                )
-                : (
-                  <div className="front-loading-container">
-                    <div className="offload-header" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item more" />
-                  </div>
-                )}
-            </>
-          )
-          : <><p>here was an error</p></>}
-        {!tableError
-          ? (
-            <>
-              { tableLoaded3
-                ? (
-                  <>
-                    <div className="front-list-container">
-                      <OffloadsList
-                        offloads={offLoads3}
-                        title={"Top 10 garn landing i " + normalizeMonth(month) }
-                        updatedOn={`Oppdatert ${upDatedOn}`}
-                      />
-                      <Link to="/topoffloads?redskap=garn"><div className="more-btn">Se Mer</div></Link>
-                    </div>
-                  </>
-                )
-                : (
-                  <div className="front-loading-container">
-                    <div className="offload-header" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item more" />
-                  </div>
-                )}
-            </>
-          )
-          : <><p>here was an error</p></>}
-                  {!tableError
-          ? (
-            <>
-              { tableLoaded4
-                ? (
-                  <>
-                    <div className="front-list-container">
-                      <OffloadsList
-                        offloads={offLoads4}
-                        title={"Top 10 pelagisk landing i " + normalizeMonth(month) }
-                        updatedOn={`Oppdatert ${upDatedOn}`}
-                      />
-                      <Link to="/topoffloads?redskap=pelagisk"><div className="more-btn">Se Mer</div></Link>
-                    </div>
-                  </>
-                )
-                : (
-                  <div className="front-loading-container">
-                    <div className="offload-header" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item" />
-                    <div className="placeholder-item more" />
-                  </div>
-                )}
-            </>
-          )
-          : <><p>here was an error</p></>}
-
+      <FrontPageList
+          tableLoaded = {tableLoaded0}
+          offladItems= {offLoads0}
+          headerText={tableTitle0}
+          fooderText={`Oppdatert ${upDatedOn}`}
+          btnLink={'/topoffloads?redskap=krokredskap'} 
+        />
+        <FrontPageList
+          tableLoaded = {tableLoaded1}
+          offladItems= {offLoads1}
+          headerText={tableTitle1}
+          fooderText={`Oppdatert ${upDatedOn}`}
+          btnLink={'/topoffloads?redskap=trål'} 
+        />
+        <FrontPageList
+          tableLoaded = {tableLoaded2}
+          offladItems= {offLoads2}
+          headerText={tableTitle2 }
+          fooderText={`Oppdatert ${upDatedOn}`}
+          btnLink={'/topoffloads?redskap=snurrevad'} 
+        />
+        <FrontPageList
+          tableLoaded = {tableLoaded3}
+          offladItems= {offLoads3}
+          headerText={tableTitle3}
+          fooderText={`Oppdatert ${upDatedOn}`}
+          btnLink={'/topoffloads?redskap=garn'} 
+        />
+        <FrontPageList
+          tableLoaded = {tableLoaded4}
+          offladItems= {offLoads4}
+          headerText={tableTitle4}
+          fooderText={`Oppdatert ${upDatedOn}`}
+          btnLink={'/topoffloads?redskap=pelagisk'} 
+        />
       </div>
       </>
     );
   }
+}
+
+const FrontPageList = (({tableLoaded, offladItems, headerText, fooderText, btnLink, btnText, loadAnimationRows})=>{
+
+  const loadingAnimations = ((totalRows)=>{
+    let rows = [];
+    for (let i = 0; i < totalRows; i++) {
+      rows.push(<div className="placeholder-item" />);
+    } 
+
+    return rows;
+  })
+  return (tableLoaded
+    ?
+      <div className="front-list-container">
+        <OffloadsList
+          offloads={ offladItems }
+          title={ headerText }
+          updatedOn={ fooderText }
+        />
+        <Link to={btnLink}><div className="more-btn">{btnText}</div></Link>
+      </div>
+    :(
+      <div className="front-loading-container">
+        <div className="offload-header" />
+        {loadingAnimations(loadAnimationRows)}
+        <div className="placeholder-item more" />
+      </div>
+    )
+  );
+})
+FrontPageList.defaultProps = {
+  tableLoaded:false,
+  headerText:'',
+  fooderText:'',
+  btnLink:'/',
+  btnText:'Se mer',
+  loadAnimationRows:'11'
 }
 
 export default FrontPage;
