@@ -12,13 +12,19 @@ class TopOffLoads extends React.Component {
     super(props);
 
     const paramsFromQuery = generateObjectFromQueryParameters(props.location.search);
+    const today = new Date();
+    let month = today.getMonth() + 1;
+    const day = today.getDay();
+    if(day === 1){
+      month -= 1;
+    }
     this.state = {
       offLoads: [],
       filter: {
         fishingGear:  paramsFromQuery['redskap'] || [],
         boatLength:   paramsFromQuery['lengde'] || [],
         fishName:     paramsFromQuery['fisketype'] || [],
-        month:        paramsFromQuery['maned'] || [],
+        month:        paramsFromQuery['maned'] || [month,month],
         year:         paramsFromQuery['ar'] || [],
         landingState: paramsFromQuery['fylke'] || [],
         pageNo:       paramsFromQuery['pageNo'] || [1],
@@ -67,7 +73,7 @@ class TopOffLoads extends React.Component {
       },
       topOffloadsLoaded: false,
       topOfflodError: false,
-      selectedMonth: 0,
+      selectedMonth: month,
       selectedYear: 0,
     };
   }
@@ -76,18 +82,18 @@ class TopOffLoads extends React.Component {
 
     const today = new Date();
     const {filter} = this.state;
-   
+    
     Promise.all([
       getOffloads(filter),
       getValue('last_updated')
     ]).then(resp =>{
       this.setState({
         offloads: resp[0],
-        upDatedOn: resp[1],
+        upDatedOn: resp[1],        
+        topOffloadsLoaded: true,
       });
       this.setState({
-        topOffloadsLoaded: true,
-        selectedMonth: today.getMonth() + 1, 
+
         selectedYear: today.getFullYear()
       });
     })

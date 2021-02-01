@@ -4,7 +4,6 @@ import { getOffloads,getValue } from '../../services/OffloadService';
 import OffloadsList from '../OffloadsList';
 import { normalizeMonth } from '../../services/TextTools';
 import FilterCheckBox from '../FilterCheckBox';
-import { th } from 'date-fns/locale';
 
 // https://fangsdata-api.herokuapp.com/api/offloads?fishingGear=Garn&Count=5
 
@@ -12,8 +11,15 @@ class FrontPage extends React.Component {
   constructor() {
     super();
     const today = new Date();
-    const month = today.getMonth() + 1;
+    let month = today.getMonth() + 1;
     const year = today.getFullYear();
+    const day = today.getDay();
+    // if it is the first of the month then there is no data to look at for that month 
+    // then i will look at the month before
+    if (day === 1) {
+      month -= 1;
+    }
+
     this.state = {
       offLoads0: [],
       offLoads1: [],
@@ -73,12 +79,21 @@ class FrontPage extends React.Component {
   }
 
   async componentDidMount() {
-    this.populateTables(); 
+    const { month,year } = this.state;
+    this.populateTables(
+      [
+        { count: [10], fishingGear: ['Krokredskap'], month: [`${month},${month}`],year:[`${year},${year}`] },
+        { count: [10], fishingGear: ['Trål'], month: [`${month},${month}`],year:[`${year},${year}`] },
+        { count: [10], fishingGear: ['Snurrevad'], month: [`${month},${month}`],year:[`${year},${year}`] },
+        { count: [10], fishingGear: ['Garn'], month: [`${month},${month}`],year:[`${year},${year}`] },
+        { count: [10], fishingGear: ['Pelagisk'], month: [`${month},${month}`],year:[`${year},${year}`] },
+      ]
+    ); 
   }
 
   async inputEvent(event) {
     const { target } = event;
-    const { monthOrYear,year } = this.state;
+    const { monthOrYear, year, month } = this.state;
 
     monthOrYear.forEach((item) => {
       if (item.value !== target.value) {
@@ -98,7 +113,15 @@ class FrontPage extends React.Component {
         ]);
       }
       else { // month
-        this.populateTables();
+        this.populateTables(
+          [
+            { count: [10], fishingGear: ['Krokredskap'], month: [`${month},${month}`] },
+            { count: [10], fishingGear: ['Trål'], month: [`${month},${month}`] },
+            { count: [10], fishingGear: ['Snurrevad'], month: [`${month},${month}`] },
+            { count: [10], fishingGear: ['Garn'], month: [`${month},${month}`] },
+            { count: [10], fishingGear: ['Pelagisk'], month: [`${month},${month}`] },
+          ]
+        );
       }
     });
   }

@@ -75,7 +75,7 @@ export const normalizeMonth = (e) => {
     case 10: return 'oktober';
     case 11: return 'november';
     case 12: return 'desember';
-    default: return 'prim';
+    default: return '';
   }
 };
 
