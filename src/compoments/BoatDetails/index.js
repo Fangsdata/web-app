@@ -33,7 +33,7 @@ class BoatDetails extends React.Component {
             } */],
       mapData: [],
       pageNo: 1,
-      resultCount: 5,
+      resultCount: 25,
       boatDetailLoaded: false,
       boatOffloadLoaded: false,
       boatDetailError: false,

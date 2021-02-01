@@ -40,7 +40,6 @@ const getBoats = async (radioSignal = '') => {
 
 const getValue = async (key = '') => {
   const resp = await fetch(`${OFFLOADAPI}/key/${key}`);
-  console.log(resp)
   const json = await resp.text();
   return json;
 }

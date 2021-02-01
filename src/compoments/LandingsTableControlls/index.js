@@ -46,8 +46,8 @@ LandingsTableControlls.propTypes = {
 
 LandingsTableControlls.defaultProps = {
   page: '',
-  defaultPageSize: 5,
-  pageSizeOptions: [5,10,25]
+  defaultPageSize: 25,
+  pageSizeOptions: [5,10,25,50,100]
 };
 
 export default LandingsTableControlls;

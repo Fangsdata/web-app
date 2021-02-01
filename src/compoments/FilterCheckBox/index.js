@@ -5,10 +5,10 @@ import {
 import FilterCheckBoxItem from '../FilterCheckBoxItem';
 
 const FilterCheckBox = ({
-  inputEvent, items, group, checkBoxType,
+  inputEvent, items, group, checkBoxType, cssFilterContainer,
 }) => (
   <>
-    <div className="filter-container">
+    <div className={cssFilterContainer}>
       { items.map((item) => (
         <FilterCheckBoxItem
           key={item}
@@ -52,6 +52,7 @@ FilterCheckBox.propTypes = {
   group: string,
   inputEvent: func,
   checkBoxType: string,
+  cssFilterContainer: string
 };
 
 FilterCheckBox.defaultProps = {
@@ -59,6 +60,7 @@ FilterCheckBox.defaultProps = {
   group: '',
   inputEvent: () => { console.log('missing inputEvent'); },
   checkBoxType: 'checkbox',
+  cssFilterContainer: 'filter-container'
 };
 
 

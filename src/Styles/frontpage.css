@@ -5,6 +5,17 @@
     justify-content: space-between;
     margin-top: 40px;
 }
+.front-list-time-period {
+    display: flex;
+    justify-content: center; 
+    padding-top: 5px;
+    height: 0px;
+
+}
+.front-list-time-period .check-item{
+    padding-right: 10px;
+    padding-left: 10px;
+}
 
 .front-page .offload-table {
     width: 34rem;

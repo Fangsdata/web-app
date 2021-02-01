@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { getOffloads,getValue } from '../../services/OffloadService';
 import OffloadsList from '../OffloadsList';
 import { normalizeMonth } from '../../services/TextTools';
+import FilterCheckBox from '../FilterCheckBox';
 import { th } from 'date-fns/locale';
 
 // https://fangsdata-api.herokuapp.com/api/offloads?fishingGear=Garn&Count=5
@@ -12,6 +13,7 @@ class FrontPage extends React.Component {
     super();
     const today = new Date();
     const month = today.getMonth() + 1;
+    const year = today.getFullYear();
     this.state = {
       offLoads0: [],
       offLoads1: [],
@@ -25,18 +27,31 @@ class FrontPage extends React.Component {
       tableLoaded4: false,
       tableError: false,
       month: month,
+      year: year,
+      monthOrYear:[ { title: 'måned', checkState: true, value: 'month' }, { title: 'år', checkState: false, value: 'year' }]
     };
   }
 
-
-  async componentDidMount() {
-
+  populateTables ( tables = [
+    { count: [10], fishingGear: ['Krokredskap'] },
+    { count: [10], fishingGear: ['Trål'] },
+    { count: [10], fishingGear: ['Snurrevad'] },
+    { count: [10], fishingGear: ['Garn'] },
+    { count: [10], fishingGear: ['Pelagisk'] },
+  ] ) {
+    this.setState({
+      tableLoaded0: false,
+      tableLoaded1: false,
+      tableLoaded2: false,
+      tableLoaded3: false,
+      tableLoaded4: false,
+    })
     Promise.all([
-      getOffloads({ count: [10], fishingGear: ['Krokredskap'] }),
-      getOffloads({ count: [10], fishingGear: ['Trål'] }),
-      getOffloads({ count: [10], fishingGear: ['Snurrevad'] }),
-      getOffloads({ count: [10], fishingGear: ['Garn'] }),
-      getOffloads({ count: [10], fishingGear: ['Pelagisk'] }),
+      getOffloads(tables[0]),
+      getOffloads(tables[1]),
+      getOffloads(tables[2]),
+      getOffloads(tables[3]),
+      getOffloads(tables[4]),
       getValue('last_updated')
     ]).then((val => {
       this.setState({
@@ -54,6 +69,38 @@ class FrontPage extends React.Component {
 
       })
     }))
+
+  }
+
+  async componentDidMount() {
+    this.populateTables(); 
+  }
+
+  async inputEvent(event) {
+    const { target } = event;
+    const { monthOrYear,year } = this.state;
+
+    monthOrYear.forEach((item) => {
+      if (item.value !== target.value) {
+        item.checkState = false;
+      } else {
+        item.checkState = true;
+
+      }
+      this.setState(monthOrYear);
+      if (target.value === "year"){
+        this.populateTables ( [
+          { count: [10], fishingGear: ['Krokredskap'], year:[`${year},${year}`], month:['1,12']},
+          { count: [10], fishingGear: ['Trål'], year:[`${year},${year}`], month:['1,12'] },
+          { count: [10], fishingGear: ['Snurrevad'], year:[`${year},${year}`], month:['1,12'] },
+          { count: [10], fishingGear: ['Garn'], year:[`${year},${year}`], month:['1,12'] },
+          { count: [10], fishingGear: ['Pelagisk'], year:[`${year},${year}`], month:['1,12'] },
+        ]);
+      }
+      else { // month
+        this.populateTables();
+      }
+    });
   }
 
   render() {
@@ -70,9 +117,19 @@ class FrontPage extends React.Component {
       tableLoaded4,
       tableError,
       month,
-      upDatedOn
+      upDatedOn,
+      monthOrYear 
     } = this.state;
     return (
+      <>
+        <FilterCheckBox
+          key="monthOrYear"
+          items={monthOrYear}
+          group="monthOrYear"
+          inputEvent={(e)=>{ this.inputEvent(e)}}
+          checkBoxType="radio"
+          cssFilterContainer = 'front-list-time-period'
+        />
       <div className="front-page">
 
         {!tableError
@@ -257,6 +314,7 @@ class FrontPage extends React.Component {
           : <><p>here was an error</p></>}
 
       </div>
+      </>
     );
   }
 }
