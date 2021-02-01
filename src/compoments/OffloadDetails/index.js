@@ -61,12 +61,13 @@ const OffloadDetails = ({ date, registrationId }) => {
 
     const totalWeight = data.reduce((a,b)=>{return { value: a.value + b.value} });
     data = data
-      .sort((a,b)=>{ 
+      .sort((a,b) => { 
         return b.value - a.value })
-      .filter((item)=> {
+      .filter((item) => {
         if(item.value / totalWeight.value > dataInputCutoff){
           return item;
         }
+        return null
       });
     
     const rest = { label: 'resten',  value: totalWeight.value - data.reduce((a,b)=>{return { value: a.value + b.value}}).value};
@@ -163,7 +164,8 @@ const OffloadDetails = ({ date, registrationId }) => {
       .catch(() => {
         setOffloadError(true);
       });
-  }, []);
+      // eslint-disable-next-line 
+  }, [date,registrationId]);
 
   return (
     <div className="boat-container landing">
@@ -312,6 +314,7 @@ const LandingsTable = (({headers, fish, totalWeight })=>{
 
   const offloadWidthIndex = () => {
     let i = 0;
+    // eslint-disable-next-line 
     Object.keys(headers).map((head) => { if (headers[head]) i++ })
     return i;
   }

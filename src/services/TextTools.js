@@ -80,7 +80,7 @@ export const normalizeMonth = (e) => {
 };
 
 export const generateObjectFromQueryParameters = (inputString) => {
-  if(inputString == ""){
+  if(inputString === ""){
     return "";
   }
   let jsObject = {};

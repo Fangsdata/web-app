@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { func, string, array, number, arrayOf } from 'prop-types';
+import { func, string, number, arrayOf } from 'prop-types';
 
 const LandingsTableControlls = ({
   nextPage, prevPage, resultNo, page, defaultPageSize, pageSizeOptions
