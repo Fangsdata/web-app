@@ -173,10 +173,15 @@ class TopOffLoads extends React.Component {
     
   }
 
-  async updateDate(selectedDate) {
+  async updateDate(selectedDate, year = false) {
     const years = [selectedDate.getFullYear(), selectedDate.getFullYear()];
-    const months = [selectedDate.getMonth() + 1, selectedDate.getMonth() + 2];
-
+    let months = [1,1];
+    if(year){ 
+      months = [selectedDate.getMonth() + 1, selectedDate.getMonth() + 1];
+    }
+    else {
+      months = [1,12];
+    }
     const { filter } = this.state;
     filter.month = months;
     filter.year = years;

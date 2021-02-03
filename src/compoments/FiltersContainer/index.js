@@ -13,6 +13,7 @@ const FiltersContainer = ({ inputEvent, allFilters, updateDate }) => {
   const [showBoatLength, setShowBoatLength] = useState(true);
   const [showFishName, setShowFishName] = useState(true);
   const [showLandingState, setShowLandingState] = useState(true);
+  const [monthOrYear, setMonthOrYear] = useState('month');
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   return (
@@ -23,23 +24,9 @@ const FiltersContainer = ({ inputEvent, allFilters, updateDate }) => {
             <img className="filter-icon" src={filterIcon} alt="" />
             Filtre:
           </p>
-          <div className="date-container">
-            <div className="date-headers">
-              <p>Velg måned:</p>
-            </div>
-            <DatePicker
-              selected={selectedDate}
-              onChange={(date) => {
-                setSelectedDate(date);
-                updateDate(date);
-              }}
-              dateFormat="MM/yyyy"
-              showMonthYearPicker
-              showFullMonthYearPicker
-            />
-          </div>
         </div>
         <div className="dropdowns-container">
+
           {showFishingGear
             ? (
               <div className="filter-dropdown closed">
@@ -110,6 +97,7 @@ const FiltersContainer = ({ inputEvent, allFilters, updateDate }) => {
                   inputEvent={inputEvent}
                   checkBoxType="checkbox"
                 />
+                
               </div>
             )}
           {showLandingState
@@ -136,26 +124,31 @@ const FiltersContainer = ({ inputEvent, allFilters, updateDate }) => {
                 />
               </div>
             )}
+           <div className="filter-dropdown closed">
 
-
+            { monthOrYear === 'month'
+              ? <DatePicker
+                  selected={selectedDate}
+                  onChange={(date) => {
+                    setSelectedDate(date);
+                    updateDate(date,true);
+                  }}
+                  dateFormat="MM/yyyy"
+                  showMonthYearPicker
+                  showFullMonthYearPicker
+                />
+              : <DatePicker
+                selected={selectedDate}
+                onChange={(date) => {
+                  setSelectedDate(date);
+                  updateDate(date,false);
+                }}
+                dateFormat="yyyy"
+                showYearPicker
+              />
+            }
+              </div>
         </div>
-        {/* { Object.keys(allFilters).map((item) => {
-                      let checboxType = 'checkbox';
-                      if (item === 'boatLength') {
-                        checboxType = 'radio';
-                      }
-                      return (
-                        <FilterCheckBox
-                          key={item}
-                          items={allFilters[item]}
-                          group={item}
-                          inputEvent={inputEvent}
-                          checkBoxType={checboxType}
-                          show={showFilter}
-                        />
-                      );
-                    })} */}
-
       </div>
     </div>
   );
