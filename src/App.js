@@ -1,9 +1,8 @@
-import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Switch, Route, Redirect,useLocation } from 'react-router-dom';
 import NavigationBar from './compoments/NavigationBar';
 import TopOffloads from './compoments/TopOffLoads';
 import Container from './compoments/Container';
-// import Boat from './compoments/Boat';
 import BoatDetails from './compoments/BoatDetails';
 import Contact from './compoments/Contact';
 import About from './compoments/About';
@@ -12,8 +11,24 @@ import OffloadDetails from './compoments/OffloadDetails';
 import NotFound from './compoments/NotFound';
 import FrontPage from './compoments/FrontPage';
 import Footer from './compoments/Footer';
+import reactGa from 'react-ga';
+import { createBrowserHistory } from 'history';
+import {GOOGLE_ANALITIC_STRING} from './Constants'
+
+const history = createBrowserHistory();
+
 
 function App() {
+  const location = useLocation();
+
+  useEffect(()=>{
+    reactGa.initialize(GOOGLE_ANALITIC_STRING);
+  },[])
+
+  useEffect(()=>{
+    reactGa.pageview(location.pathname + location.search); 
+  },[location]);
+
   return (
     <div className="App">
       <NavigationBar />

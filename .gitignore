@@ -1,6 +1,6 @@
 publish.sh
 .ds_store
-
+src/Constants/hidden.js
 # Logs
 logs
 *.log
