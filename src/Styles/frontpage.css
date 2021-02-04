@@ -57,16 +57,17 @@
 .front-page .placeholder-item {
     height: 2.6rem;
     width: 34rem;
-    margin: 0;
+    margin: 1px;
     margin-bottom: 0.5rem;
     border-radius: 2px;
     animation: animatedBackgroundLong 5s linear infinite;
-
 }
 
 .front-page .offload-header {
     width: 100%;
     margin-bottom: 0.5rem;
+    margin: 1px;
+
 }
 
 .front-loading-container {
@@ -75,6 +76,21 @@
     margin-bottom: 2rem;
 }
 
+.top-offload-loading-container .placeholder-item{
+    height: 2.6rem;
+    width: 100%;
+    margin: 1px;
+    margin-bottom: 0.5rem;
+    border-radius: 2px;
+    background-color: red;
+    animation: animatedBackgroundLong 5s linear infinite;;
+}
+
+.top-offload-loading-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem; 
+}
 .placeholder-item.more {
     padding: 0.6rem;
     border-radius: 2rem;

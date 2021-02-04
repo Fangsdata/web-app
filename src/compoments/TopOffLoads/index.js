@@ -4,6 +4,7 @@ import OffloadsList from '../OffloadsList';
 import FilterContainer from '../FiltersContainer';
 import { normalizeMonth,generateObjectFromQueryParameters, generateQueryParamFromObject, translateGroupNames } from '../../services/TextTools';
 import LandingsTableControlls from '../LandingsTableControlls';
+import LoadingAnimation from '../LoadingAnimation';
 
 let filterTimeOut;
 
@@ -237,16 +238,17 @@ class TopOffLoads extends React.Component {
           ? (
             <>
               { topOffloadsLoaded
-                ? (
-                  <OffloadsList
+
+                ? <OffloadsList
                     offloads={offLoads}
                     pageNo={filter.pageNo[0]}
                     title={`Største landing i ${normalizeMonth(selectedMonth[0])} ${selectedYear[0]}`}
             
                     updatedOn={`Oppdatert ${upDatedOn}`}
                   />
-                )
-                : <div className="loader">Loading...</div>}
+                : <LoadingAnimation rowCount={filter.count[0]}
+                containerClass='top-offload-loading-container' /> 
+              }
             </>
           )
           : <><p>error Loading toplist</p></>}

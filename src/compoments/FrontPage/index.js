@@ -4,6 +4,7 @@ import { getOffloads,getValue } from '../../services/OffloadService';
 import OffloadsList from '../OffloadsList';
 import { normalizeMonth,norweganQueryParam } from '../../services/TextTools';
 import FilterCheckBox from '../FilterCheckBox';
+import LoadingAnimation from '../LoadingAnimation';
 
 // https://fangsdata-api.herokuapp.com/api/offloads?fishingGear=Garn&Count=5
 
@@ -82,7 +83,7 @@ class FrontPage extends React.Component {
       },
     ]
   ){
-    
+
     let emptyList = [];
     data.forEach(() => {
       emptyList.push({loaded:false})
@@ -236,15 +237,6 @@ class FrontPage extends React.Component {
 }
 
 const FrontPageList = (({tableLoaded, offladItems, headerText, fooderText, btnLink, btnText, loadAnimationRows})=>{
-
-  const loadingAnimations = ((totalRows)=>{
-    let rows = [];
-    for (let i = 0; i < totalRows; i++) {
-      rows.push(<div className="placeholder-item" />);
-    } 
-
-    return rows;
-  })
   return (tableLoaded
     ?
       <div className="front-list-container">
@@ -255,13 +247,7 @@ const FrontPageList = (({tableLoaded, offladItems, headerText, fooderText, btnLi
         />
         <Link to={btnLink}><div className="more-btn">{btnText}</div></Link>
       </div>
-    :(
-      <div className="front-loading-container">
-        <div className="offload-header" />
-        {loadingAnimations(loadAnimationRows)}
-        <div className="placeholder-item more" />
-      </div>
-    )
+    :<LoadingAnimation rowCount={loadAnimationRows}/>
   );
 })
 FrontPageList.defaultProps = {
