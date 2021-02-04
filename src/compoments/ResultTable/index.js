@@ -11,18 +11,19 @@ const ResultTable = (({title,headers, items })=>{
     : <p className="offload-group">{head}</p>
     ))}
     </div>
-
-    { items.map((row, i) => (
-        <Link to={`/boats/${row['registration_id']}`}>
-            <div className="offload-row">
-            <p className="offload-index">{i+1}</p>
-            {Object.keys(row).map((col, i)=>(i === 0
-            ?<p className="offload-name">{row[col]}</p>
-            :<p className="offload-group">{row[col]}</p>))}
-            </div>
-        </Link>
-    ))}
-
+    { items.length !== 0
+        ?items.map((row, i) => (
+            <Link to={`/boats/${row['registration_id']}`}>
+                <div className="offload-row">
+                <p className="offload-index">{i+1}</p>
+                {Object.keys(row).map((col, i)=>(i === 0
+                ?<p className="offload-name">{row[col]}</p>
+                :<p className="offload-group">{row[col]}</p>))}
+                </div>
+            </Link>
+        ))
+        :<p>ingen resultater</p>
+    }
   </div>)
   });
 
