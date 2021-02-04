@@ -12,10 +12,8 @@ import NotFound from './compoments/NotFound';
 import FrontPage from './compoments/FrontPage';
 import Footer from './compoments/Footer';
 import reactGa from 'react-ga';
-import { createBrowserHistory } from 'history';
 import {GOOGLE_ANALITIC_STRING} from './Constants'
 
-const history = createBrowserHistory();
 
 
 function App() {

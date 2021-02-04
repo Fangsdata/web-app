@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { getOffloads,getValue } from '../../services/OffloadService';
 import OffloadsList from '../OffloadsList';
-import { normalizeMonth,generateQueryParamFromObject } from '../../services/TextTools';
+import { normalizeMonth,norweganQueryParam } from '../../services/TextTools';
 import FilterCheckBox from '../FilterCheckBox';
 
 // https://fangsdata-api.herokuapp.com/api/offloads?fishingGear=Garn&Count=5
@@ -82,9 +82,7 @@ class FrontPage extends React.Component {
       },
     ]
   ){
-    const {offloads} =this.state;
-
-    // Initilze a empty list 
+    
     let emptyList = [];
     data.forEach(() => {
       emptyList.push({loaded:false})
@@ -102,7 +100,7 @@ class FrontPage extends React.Component {
            loaded:true,
            title: data[i]['title'],
            data:resp,
-           link: generateQueryParamFromObject(data[i]['query'])
+           link: norweganQueryParam(data[i]['query'])
          })
        });
        this.setState ({offloads: updated} );
@@ -149,7 +147,6 @@ class FrontPage extends React.Component {
         item.checkState = false;
       } else {
         item.checkState = true;
-
       }
       this.setState(monthOrYear);
       if (target.value === "year"){

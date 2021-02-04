@@ -12,9 +12,32 @@ const FiltersContainer = ({ inputEvent, allFilters, updateDate }) => {
   const [showFishingGear, setShowFishingGear] = useState(true);
   const [showBoatLength, setShowBoatLength] = useState(true);
   const [showFishName, setShowFishName] = useState(true);
+  const [showDatePicker, setShowDatePicker] = useState(true);
   const [showLandingState, setShowLandingState] = useState(true);
-  const [monthOrYear, setMonthOrYear] = useState('month');
+  const [monthOrYear, setMonthOrYear] = useState([
+    { title: 'måned', checkState: true, value: 'month' },
+    { title: 'år', checkState: false, value: 'year' }]);
+  const [isMonth, setIsMonth] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
+ 
+  const changeMonthOrYear = (e,updateDate) => {
+    const { target } = e;
+    monthOrYear.forEach(item =>{
+      if (item.value !== target.value){ item.checkState = false;}
+      else { item.checkState = true; }
+
+    if(target.value === "year"){
+      setMonthOrYear(monthOrYear);
+      updateDate(selectedDate , true);
+      setIsMonth(false);
+     }
+    else { 
+      setMonthOrYear(monthOrYear);
+      updateDate(selectedDate , false);
+      setIsMonth(true);
+    }
+    })
+  }
 
   return (
     <div>
@@ -124,32 +147,54 @@ const FiltersContainer = ({ inputEvent, allFilters, updateDate }) => {
                 />
               </div>
             )}
-           <div className="filter-dropdown closed">
-
-            { monthOrYear === 'month'
-              ? <DatePicker
-                  selected={selectedDate}
-                  onChange={(date) => {
-                    setSelectedDate(date);
-                    updateDate(date,true);
-                  }}
-                  dateFormat="MM/yyyy"
-                  showMonthYearPicker
-                  showFullMonthYearPicker
-                />
-              : <DatePicker
-                selected={selectedDate}
-                onChange={(date) => {
-                  setSelectedDate(date);
-                  updateDate(date,false);
-                }}
-                dateFormat="yyyy"
-                showYearPicker
-              />
-            }
+              {showDatePicker
+                ? <div className="filter-dropdown closed">
+                  <p className="f-headers" onClick={() => setShowDatePicker(!showDatePicker)}>
+                    Dato
+                    <img className="arrow-icon" src={downArrow} alt="" />
+                  </p>
+                </div>
+                :<div className="filter-dropdown not-full">
+                    <p className="f-headers" onClick={() => setShowDatePicker(!showDatePicker)}>
+                      Dato
+                      <img className="arrow-icon" src={upArrow} alt="" />
+                    </p>
+                    <div className="filter-container">
+                    <FilterCheckBox
+                            key="monthOrYear"
+                            items={monthOrYear}
+                            group="monthOrYear"
+                            inputEvent={(e)=>{ 
+                              changeMonthOrYear(e,updateDate)}}
+                            checkBoxType="radio"
+                            cssFilterContainer = ''
+                          />
+                      { isMonth === true
+                      ? <DatePicker
+                          selected={selectedDate}
+                          onChange={(date) => {
+                            setSelectedDate(date);
+                            updateDate(date,true);
+                          }}
+                          dateFormat="MM/yyyy"
+                          showMonthYearPicker
+                          showFullMonthYearPicker
+                        />
+                      : <DatePicker
+                        selected={selectedDate}
+                        onChange={(date) => {
+                          setSelectedDate(date);
+                          updateDate(date,false);
+                        }}
+                        dateFormat="yyyy"
+                        showYearPicker
+                      />
+                    }
+                      </div>
+                </div>
+                }
               </div>
         </div>
-      </div>
     </div>
   );
 };

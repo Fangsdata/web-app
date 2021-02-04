@@ -93,12 +93,15 @@ export const generateObjectFromQueryParameters = (inputString) => {
 }
 
 
+
 export const translateGroupNames = (input) => {
   switch (input) {
     case 'fishingGear': return 'redskap';
     case 'boatLength': return 'lengde';
     case 'fishName': return 'fisketype';
     case 'landingState': return 'fylke';
+    case 'year': return 'ar';
+    case 'month': return 'maned';
     default: return '';
   }
 }
@@ -108,6 +111,22 @@ export const generateQueryParamFromObject = (inputObj) => {
   let queryString = '?';
   Object.keys(inputObj).forEach((key)=>{
     queryString += key + '=';
+
+    inputObj[key].forEach((item)=>{
+      queryString += item + ',';
+    });
+    queryString = queryString.substring(0, queryString.length - 1);
+    queryString += '&';
+  });
+  queryString = queryString.substring(0, queryString.length - 1);
+  return queryString;
+}
+
+export const norweganQueryParam = (inputObj) => {
+
+  let queryString = '?';
+  Object.keys(inputObj).forEach((key)=>{
+    queryString += translateGroupNames(key) + '=';
 
     inputObj[key].forEach((item)=>{
       queryString += item + ',';
