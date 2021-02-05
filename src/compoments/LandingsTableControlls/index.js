@@ -25,8 +25,9 @@ const LandingsTableControlls = ({
             resultNo(e.target.value);
           }}
         >
-          {pageSizeOptions.map((item)=>(
-            <option value={item}>{item}</option>
+          {pageSizeOptions.map((item)=>( defaultPageSize !== item
+          ?<option value={item}>{item}</option>
+          :<option selected value={item} >{item}</option>
           ))}
         </select>
       </div>
@@ -46,7 +47,7 @@ LandingsTableControlls.propTypes = {
 
 LandingsTableControlls.defaultProps = {
   page: '',
-  defaultPageSize: 25,
+  defaultPageSize: 5,
   pageSizeOptions: [5,10,25,50,100]
 };
 

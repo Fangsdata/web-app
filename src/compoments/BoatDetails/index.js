@@ -8,6 +8,7 @@ import boaticon from './boat.png';
 import selectionsContext from '../../Context/selectionsContext';
 
 class BoatDetails extends React.Component {
+  static contextType = selectionsContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -34,7 +35,7 @@ class BoatDetails extends React.Component {
             } */],
       mapData: [],
       pageNo: 1,
-      resultCount: 25,
+      resultCount: 5,
       boatDetailLoaded: false,
       boatOffloadLoaded: false,
       boatDetailError: false,
@@ -45,6 +46,13 @@ class BoatDetails extends React.Component {
   async componentDidMount() {
     const { boatname, boatRadio } = this.props;
     const { pageNo, resultCount } = this.state;
+    const { boatOffloadPageCount,boatOffloadPageNo } = this.context;
+
+    this.setState({
+      pageNo: boatOffloadPageNo,
+      resultCount: boatOffloadPageCount,
+    });
+
     fetch(`http://fangsdata-api.herokuapp.com/api/Boats/registration/${boatname}`)
       .then((res) => res.json())
       .then((res) => {
@@ -138,8 +146,10 @@ class BoatDetails extends React.Component {
       registrationId,
       radioSignalId
     } = boat;
-
+    console.log(resultCount)
     const { boatname } = this.props;
+
+    const {setBoatOffloadPageNo, setBoatOffloadPageCount} = this.context;
 
     let cleanMapData = mapData;
     if (mapData === undefined) {
@@ -234,21 +244,26 @@ class BoatDetails extends React.Component {
           nextPage={() => {
             let page = pageNo;
             page += 1;
+            setBoatOffloadPageNo(page);
             this.setState({ pageNo: page });
           }}
           prevPage={() => {
             let page = pageNo;
             if (page > 1) {
               page -= 1;
+              setBoatOffloadPageNo(page);
               this.setState({ pageNo: page });
             }
           }}
           resultNo={(no) => {
             let page = pageNo;
             page = 1;
+            setBoatOffloadPageNo(page);
+            setBoatOffloadPageCount(no);
             this.setState({ resultCount: no, pageNo: page });
           }}
           page={pageNo}
+          defaultPageSize={resultCount}
         />
       </div>
     );

@@ -1,7 +1,14 @@
 import { createContext } from 'react';
 
 const selectionsContext = createContext(
-    {isMonth:null,
-    setIsMonth: ()=>{}});
+    {
+        isMonth:null,
+        setIsMonth: ()=>{},
+        boatOffloadPageNo:null,
+        setBoatOffloadPageNo: ()=>{},
+        boatOffloadPageCount:null,
+        setBoatOffloadPageCount: ()=>{}
+    }
+);
 
 export default selectionsContext;

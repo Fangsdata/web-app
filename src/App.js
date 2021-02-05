@@ -29,8 +29,18 @@ function App() {
   },[location]);
 
   const [isMonth, setIsMonth] = useState(true);
-  const [a, b] = useState(true);
-  const value = useMemo(()=>({isMonth, setIsMonth,a,b}),[isMonth,setIsMonth,a,b])
+  const [boatOffloadPageNo,setBoatOffloadPageNo] = useState(1);
+  const [boatOffloadPageCount, setBoatOffloadPageCount] = useState(5);
+   
+  const value = useMemo(()=>({
+    isMonth, setIsMonth,
+    boatOffloadPageNo,setBoatOffloadPageNo,
+    boatOffloadPageCount, setBoatOffloadPageCount 
+  }),[
+    isMonth,setIsMonth,
+    boatOffloadPageNo,setBoatOffloadPageNo,
+    boatOffloadPageCount, setBoatOffloadPageCount  
+  ])
 
   return (
     <div className="App">
@@ -48,7 +58,7 @@ function App() {
                 <Route exact path="/offloads/:date/:registrationId" render={(e) => <OffloadDetails date={e.match.params.date} registrationId={e.match.params.registrationId}/>} />
                 <Route path="/*" component={NotFound} />
             </Switch>
-              </selectionsContext.Provider>
+            </selectionsContext.Provider>
       </Container>
       <Footer />
     </div>
