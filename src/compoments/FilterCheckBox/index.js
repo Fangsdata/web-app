@@ -58,7 +58,7 @@ FilterCheckBox.propTypes = {
 FilterCheckBox.defaultProps = {
   items: [],
   group: '',
-  inputEvent: () => { console.log('missing inputEvent'); },
+  inputEvent: () => {},
   checkBoxType: 'checkbox',
   cssFilterContainer: 'filter-container'
 };

@@ -32,7 +32,8 @@ FilterCheckBoxItem.defaultProps = {
   item: '',
   value: '',
   group: '',
-  inputEvent: () => { console.log('missing inputEvent'); },
+  inputEvent: () => {},
+
   checkState: false,
   checkBoxType: 'checkbox',
 };

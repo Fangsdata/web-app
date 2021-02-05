@@ -146,7 +146,7 @@ class BoatDetails extends React.Component {
       registrationId,
       radioSignalId
     } = boat;
-    console.log(resultCount)
+    
     const { boatname } = this.props;
 
     const {setBoatOffloadPageNo, setBoatOffloadPageCount} = this.context;

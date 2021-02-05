@@ -5,10 +5,14 @@ import FilterContainer from '../FiltersContainer';
 import { normalizeMonth,generateObjectFromQueryParameters, generateQueryParamFromObject, translateGroupNames } from '../../services/TextTools';
 import LandingsTableControlls from '../LandingsTableControlls';
 import LoadingAnimation from '../LoadingAnimation';
+import selectionsContext from '../../Context/selectionsContext';
+
 
 let filterTimeOut;
 
 class TopOffLoads extends React.Component {
+  static contextType = selectionsContext;
+
   constructor(props) {
     super(props);
 
@@ -83,6 +87,13 @@ class TopOffLoads extends React.Component {
   async componentDidMount() {
 
     const {filter} = this.state;
+    const {topLandingsPageCount,topLandingsPageNo} = this.context;
+
+
+    filter['count'] = [topLandingsPageCount];
+    filter['pageNo'] = [topLandingsPageNo];
+
+    this.setState(filter);
 
     Promise.all([
       getOffloads(filter),
@@ -185,7 +196,6 @@ class TopOffLoads extends React.Component {
     selected['maned'] = months;
     selected['ar'] = years;
     
-    console.log(selected)
 
     this.props.history.push('topoffloads' + generateQueryParamFromObject(selected));
   }
@@ -222,8 +232,19 @@ class TopOffLoads extends React.Component {
 
   render() {
     const {
-      topOffloadsLoaded, topOfflodError, selectedMonth, selectedYear, offLoads, allFilters, filter,upDatedOn
+      topOffloadsLoaded, 
+      topOfflodError, 
+      selectedMonth, 
+      selectedYear, 
+      offLoads, 
+      allFilters, 
+      filter,
+      upDatedOn
     } = this.state;
+
+    const { setTopLandingPageNo, 
+            setTopLandingPageCount } = this.context;
+
     return (
       <div>
         <FilterContainer
@@ -257,6 +278,7 @@ class TopOffLoads extends React.Component {
                 page += 1;
                 let newFilter = filter;
                 newFilter.pageNo = [page];
+                setTopLandingPageNo(newFilter.pageNo);
                 this.setState({ filter: newFilter, offLoads: await getOffloads(newFilter) });
               }}
               prevPage={ async ()=>{
@@ -265,6 +287,7 @@ class TopOffLoads extends React.Component {
                   page -= 1;
                   let newFilter = filter;
                   newFilter.pageNo = [page];
+                  setTopLandingPageNo(newFilter.pageNo);
                   this.setState({ filter: newFilter, offLoads: await getOffloads(newFilter) });
                 }
               }}
@@ -272,6 +295,8 @@ class TopOffLoads extends React.Component {
                 let newFilter = filter;
                 newFilter.pageNo = [1];
                 newFilter.count = [no];
+                setTopLandingPageNo(newFilter.pageNo);
+                setTopLandingPageCount(no);
                 this.setState({ filter: newFilter, offLoads: await getOffloads(newFilter) });
               }}
               page={filter.pageNo[0]}
