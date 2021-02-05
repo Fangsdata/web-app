@@ -1,4 +1,5 @@
 import React from 'react';
+import selectMonthContext from '../../Context/selectionsContext'; 
 import { Link } from 'react-router-dom';
 import { getOffloads,getValue } from '../../services/OffloadService';
 import OffloadsList from '../OffloadsList';
@@ -9,6 +10,8 @@ import LoadingAnimation from '../LoadingAnimation';
 // https://fangsdata-api.herokuapp.com/api/offloads?fishingGear=Garn&Count=5
 
 class FrontPage extends React.Component {
+  static contextType = selectMonthContext;
+
   constructor() {
     super();
     const today = new Date();
@@ -18,7 +21,6 @@ class FrontPage extends React.Component {
     if (day === 1) {
       month -= 1;
     }
-
     this.state = {
       offloads: [
         {
@@ -54,10 +56,8 @@ class FrontPage extends React.Component {
       ],
       month: month,
       year: year,
-      monthOrYear:[ { title: 'måned', checkState: true, value: 'month' }, { title: 'år', checkState: false, value: 'year' }]
     };
   }
-
 
   populateTables2 ( 
     data = [
@@ -113,36 +113,73 @@ class FrontPage extends React.Component {
 
   async componentDidMount() {
     const { month,year } = this.state;
-    this.populateTables2(
-      [
-        {
-          query: {  count: [10], fishingGear: ['Krokredskap'], month: [`${month},${month}`],year:[`${year},${year}`] },
-          title:  "Top 10 krokredskap landing i " + normalizeMonth(month),
-        },
-        {
-          query: { count: [10], fishingGear: ['Trål'], month: [`${month},${month}`],year:[`${year},${year}`] },
-          title:  "Top 10 trål landing i " + normalizeMonth(month),
-        },
-        { 
-          query: { count: [10], fishingGear: ['Snurrevad'], month: [`${month},${month}`],year:[`${year},${year}`] },
-          title:  "Top 10 snurrevad landing i " + normalizeMonth(month),
-        },
-        { 
-          query: { count: [10], fishingGear: ['Garn'], month: [`${month},${month}`],year:[`${year},${year}`] },
-          title:  "Top 10 garn landing i " + normalizeMonth(month),
-        },
-        { 
-          query: { count: [10], fishingGear: ['Pelagisk'], month: [`${month},${month}`],year:[`${year},${year}`] },
-          title:  "Top 10 pelagisk landing i " + normalizeMonth(month),
-        },
-      ],
-    ); 
+    const { isMonth } = this.context;
+    if(isMonth !== null){
+      this.setState({
+        monthOrYear:[ { title: 'måned', checkState: isMonth, value: 'month' }, { title: 'år', checkState: !isMonth, value: 'year' }],
+      });
+      if (isMonth){
+        this.populateTables2(
+          [
+            {
+              query: {  count: [10], fishingGear: ['Krokredskap'], month: [`${month},${month}`],year:[`${year},${year}`] },
+              title:  "Top 10 krokredskap landing i " + normalizeMonth(month),
+            },
+            {
+              query: { count: [10], fishingGear: ['Trål'], month: [`${month},${month}`],year:[`${year},${year}`] },
+              title:  "Top 10 trål landing i " + normalizeMonth(month),
+            },
+            { 
+              query: { count: [10], fishingGear: ['Snurrevad'], month: [`${month},${month}`],year:[`${year},${year}`] },
+              title:  "Top 10 snurrevad landing i " + normalizeMonth(month),
+            },
+            { 
+              query: { count: [10], fishingGear: ['Garn'], month: [`${month},${month}`],year:[`${year},${year}`] },
+              title:  "Top 10 garn landing i " + normalizeMonth(month),
+            },
+            { 
+              query: { count: [10], fishingGear: ['Pelagisk'], month: [`${month},${month}`],year:[`${year},${year}`] },
+              title:  "Top 10 pelagisk landing i " + normalizeMonth(month),
+            },
+          ],
+        ); 
+      }
+      else {
+        this.populateTables2 (
+          [
+            {
+              query: {  count: [10], fishingGear: ['Krokredskap'], month: [`1,12`],year:[`${year},${year}`] },
+              title: "Top 10 krokredskap landing i " + year,
+            },
+            {
+              query: { count: [10], fishingGear: ['Trål'], month: [`1,12`],year:[`${year},${year}`] },
+              title:  "Top 10 trål landing i " + year,
+            },
+            { 
+              query: { count: [10], fishingGear: ['Snurrevad'], month: [`1,12`],year:[`${year},${year}`] },
+              title:  "Top 10 snurrevad landing i " + year
+            },
+            { 
+              query: { count: [10], fishingGear: ['Garn'], month: [`1,12`],year:[`${year},${year}`] },
+              title: "Top 10 garn landing i " + year,
+            },
+            { 
+              query: { count: [10], fishingGear: ['Pelagisk'], month: [`1,12`],year:[`${year},${year}`] },
+              title: "Top 10 pelagisk landing i " + year,
+            }]);
+      }
+      
+    }
+
+
+
   }
 
   async inputEvent(event) {
     const { target } = event;
     const { monthOrYear, year, month } = this.state;
-
+    this.context.setIsMonth(!monthOrYear[0].checkState);
+    
     monthOrYear.forEach((item) => {
       if (item.value !== target.value) {
         item.checkState = false;
@@ -150,6 +187,7 @@ class FrontPage extends React.Component {
         item.checkState = true;
       }
       this.setState(monthOrYear);
+
       if (target.value === "year"){
         this.populateTables2 (
         [
@@ -210,7 +248,7 @@ class FrontPage extends React.Component {
       monthOrYear 
     } = this.state;
     return (
-      <>
+       <>
         <FilterCheckBox
           key="monthOrYear"
           items={monthOrYear}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState, useMemo } from 'react';
 import { Switch, Route, Redirect,useLocation } from 'react-router-dom';
 import NavigationBar from './compoments/NavigationBar';
 import TopOffloads from './compoments/TopOffLoads';
@@ -12,7 +12,8 @@ import NotFound from './compoments/NotFound';
 import FrontPage from './compoments/FrontPage';
 import Footer from './compoments/Footer';
 import reactGa from 'react-ga';
-import {GOOGLE_ANALITIC_STRING} from './Constants'
+import {GOOGLE_ANALITIC_STRING} from './Constants';
+import selectionsContext from './Context/selectionsContext';
 
 
 
@@ -27,21 +28,27 @@ function App() {
     reactGa.pageview(location.pathname + location.search); 
   },[location]);
 
+  const [isMonth, setIsMonth] = useState(true);
+  const [a, b] = useState(true);
+  const value = useMemo(()=>({isMonth, setIsMonth,a,b}),[isMonth,setIsMonth,a,b])
+
   return (
     <div className="App">
       <NavigationBar />
       <Container>
-        <Switch>
-          <Route exact path="/" component={FrontPage} />
-          <Route exact path="/topoffloads" component={TopOffloads} />
-          <Route exact path="/home" render={() => <Redirect to="/" />} />
-          <Route exact path="/contact" component={Contact} />
-          <Route exact path="/about" component={About} />
-          <Route exact path="/Search/:term" render={(e) => <Search term={e.match.params.term} />}  />
-          <Route exact path="/boats/:boatname" render={(e) => <BoatDetails boatname={e.match.params.boatname} />} />
-          <Route exact path="/offloads/:date/:registrationId" render={(e) => <OffloadDetails date={e.match.params.date} registrationId={e.match.params.registrationId}/>} />
-          <Route path="/*" component={NotFound} />
-        </Switch>
+              <selectionsContext.Provider value={value}>
+            <Switch>
+                <Route exact path="/" component={FrontPage} />
+                <Route exact path="/topoffloads" component={TopOffloads} />
+                <Route exact path="/home" render={() => <Redirect to="/" />} />
+                <Route exact path="/contact" component={Contact} />
+                <Route exact path="/about" component={About} />
+                <Route exact path="/Search/:term" render={(e) => <Search term={e.match.params.term} />}  />
+                <Route exact path="/boats/:boatname" render={(e) => <BoatDetails boatname={e.match.params.boatname} />} />
+                <Route exact path="/offloads/:date/:registrationId" render={(e) => <OffloadDetails date={e.match.params.date} registrationId={e.match.params.registrationId}/>} />
+                <Route path="/*" component={NotFound} />
+            </Switch>
+              </selectionsContext.Provider>
       </Container>
       <Footer />
     </div>

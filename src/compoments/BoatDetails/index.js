@@ -5,6 +5,7 @@ import LandingsTable from '../LandingsTable';
 import LandingsTableControlls from '../LandingsTableControlls';
 import { normalizeCase, normalizeLength, normalizeWeight } from '../../services/TextTools';
 import boaticon from './boat.png';
+import selectionsContext from '../../Context/selectionsContext';
 
 class BoatDetails extends React.Component {
   constructor(props) {

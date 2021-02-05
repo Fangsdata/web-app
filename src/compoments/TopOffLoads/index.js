@@ -38,7 +38,7 @@ class TopOffLoads extends React.Component {
           { title: 'Pelagisk', checkState: paramsFromQuery['redskap'] == 'pelagisk' || false, value: 'Pelagisk' },
           { title: 'Bur og ruser', checkState: paramsFromQuery['redskap'] == 'bur og ruser' || false, value: 'Bur og ruser' },
           { title: 'Andre redskap', checkState: paramsFromQuery['redskap'] == 'andre redskap' || false, value: 'Andre redskap' },
-          { title: 'Krokredskap', checkState: paramsFromQuery['redskap'][0] == 'krokredskap' || false, value: 'Krokredskap' },
+          { title: 'Krokredskap', checkState: paramsFromQuery['redskap'] == 'krokredskap' || false, value: 'Krokredskap' },
           { title: 'Garn', checkState: paramsFromQuery['redskap'] == 'garn' || false, value: 'Garn' },
           { title: 'Snurrevad', checkState: paramsFromQuery['redskap'] == 'snurrevad' || false, value: 'Snurrevad' },
           { title: 'Oppdrett/uspesifisert', checkState: paramsFromQuery['redskap'] == 'oppdrett/uspesifisert' || false, value: 'Oppdrett/uspesifisert' }],
