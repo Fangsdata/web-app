@@ -28,25 +28,24 @@ function App() {
     reactGa.pageview(location.pathname + location.search); 
   },[location]);
 
-  const [isMonth, setIsMonth] = useState(true);
-  const [boatOffloadPageNo,setBoatOffloadPageNo] = useState(1);
-  const [boatOffloadPageCount, setBoatOffloadPageCount] = useState(5);
-
-  const [topLandingsPageNo, setTopLandingPageNo] = useState(1);
-  const [topLandingsPageCount, setTopLandingPageCount] = useState(10);
+  const [isMonth,               setIsMonth] = useState(true);
+  const [boatOffloadPageNo,     setBoatOffloadPageNo] = useState(1);
+  const [boatOffloadPageCount,  setBoatOffloadPageCount] = useState(5);
+  const [topLandingsPageNo,     setTopLandingPageNo] = useState(1);
+  const [topLandingsPageCount,  setTopLandingPageCount] = useState(10);
    
   const value = useMemo(()=>({
-    isMonth, setIsMonth,
-    boatOffloadPageNo,setBoatOffloadPageNo,
+    isMonth,              setIsMonth,
+    boatOffloadPageNo,    setBoatOffloadPageNo,
     boatOffloadPageCount, setBoatOffloadPageCount,
-    topLandingsPageNo, setTopLandingPageNo,
+    topLandingsPageNo,    setTopLandingPageNo,
     topLandingsPageCount, setTopLandingPageCount ,
   }),[
-    isMonth,setIsMonth,
-    boatOffloadPageNo,setBoatOffloadPageNo,
+    isMonth,              setIsMonth,
+    boatOffloadPageNo,    setBoatOffloadPageNo,
     boatOffloadPageCount, setBoatOffloadPageCount,
-    topLandingsPageNo, setTopLandingPageNo,
-    topLandingsPageCount, setTopLandingPageCount, 
+    topLandingsPageNo,    setTopLandingPageNo,
+    topLandingsPageCount, setTopLandingPageCount,
   ])
 
   return (

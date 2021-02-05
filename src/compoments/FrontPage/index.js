@@ -58,31 +58,32 @@ class FrontPage extends React.Component {
       year: year,
     };
   }
-
-  populateTables2 ( 
-    data = [
-      { 
-        query: { count: [10], fishingGear: ['Krokredskap'] },
-        title: "Top 10 krokredskap landing" 
-      },
-      { 
-        query: {  count: [10], fishingGear: ['Trål'] },
-        title: "Top 10 trål landing" 
-      },
-      { 
-        query: { count: [10], fishingGear: ['Snurrevad'] },
-        title: "Top 10 snurrevad landing" 
-      },
-      { 
-        query: { count: [10], fishingGear: ['Garn'] },
-        title: "Top 10 garn landing" 
-      },
-      { 
-        query: { count: [10], fishingGear: ['Pelagisk']},
-        title: "Top 10 Pelagisk landing" 
-      },
-    ]
-  ){
+/**
+ * [
+        { 
+          query: { count: [10], fishingGear: ['Krokredskap'] },
+          title: "Top 10 krokredskap landing" 
+        },
+        { 
+          query: {  count: [10], fishingGear: ['Trål'] },
+          title: "Top 10 trål landing" 
+        },
+        { 
+          query: { count: [10], fishingGear: ['Snurrevad'] },
+          title: "Top 10 snurrevad landing" 
+        },
+        { 
+          query: { count: [10], fishingGear: ['Garn'] },
+          title: "Top 10 garn landing" 
+        },
+        { 
+          query: { count: [10], fishingGear: ['Pelagisk']},
+          title: "Top 10 Pelagisk landing" 
+        }
+  ]
+ * @param {} data 
+ */
+  populateTables2 ( data ){
 
     let emptyList = [];
     data.forEach(() => {
@@ -91,21 +92,20 @@ class FrontPage extends React.Component {
     });
     this.setState ({offloads: emptyList} );
 
-
-    Promise.all(
-      data.map( async (item)=>{ return getOffloads(item['query'])}),
-     ).then(resps => {
-       let updated = [];
-       resps.forEach((resp,i) => {
-         updated.push( {
-           loaded:true,
-           title: data[i]['title'],
-           data:resp,
-           link: norweganQueryParam(data[i]['query'])
-         })
+      Promise.all(
+        data.map( async (item)=>{ return getOffloads(item['query'])}),
+       ).then(resps => {
+         let updated = [];
+         resps.forEach((resp,i) => {
+           updated.push( {
+             loaded:true,
+             title: data[i]['title'],
+             data:resp,
+             link: norweganQueryParam(data[i]['query'])
+           })
+         });
+         this.setState ({offloads: updated} );
        });
-       this.setState ({offloads: updated} );
-     });
     getValue('last_updated').then(resp => {
       this.setState({upDatedOn:resp})
     });
@@ -175,11 +175,13 @@ class FrontPage extends React.Component {
 
   }
 
-  async inputEvent(event) {
+  inputEvent(event) {
     const { target } = event;
     const { monthOrYear, year, month } = this.state;
-    this.context.setIsMonth(!monthOrYear[0].checkState);
-    
+    const { setIsMonth } = this.context;
+
+    setIsMonth(!monthOrYear[0].checkState);
+     
     monthOrYear.forEach((item) => {
       if (item.value !== target.value) {
         item.checkState = false;
@@ -253,7 +255,10 @@ class FrontPage extends React.Component {
           key="monthOrYear"
           items={monthOrYear}
           group="monthOrYear"
-          inputEvent={(e)=>{ this.inputEvent(e)}}
+          inputEvent={(e)=>{
+            this.inputEvent(e);
+
+          }}
           checkBoxType="radio"
           cssFilterContainer = 'front-list-time-period'
         />
