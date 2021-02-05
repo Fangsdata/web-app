@@ -13,7 +13,6 @@ class TopOffLoads extends React.Component {
     super(props);
 
     const paramsFromQuery = generateObjectFromQueryParameters(props.location.search);
-    console.log(paramsFromQuery['redskap'][0]);
     const today = new Date();
     let month = today.getMonth() + 1;
     const day = today.getDay();
