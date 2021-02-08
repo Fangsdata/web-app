@@ -6,6 +6,7 @@ import LandingsTableControlls from '../LandingsTableControlls';
 import { normalizeCase, normalizeLength, normalizeWeight } from '../../services/TextTools';
 import boaticon from './boat.png';
 import selectionsContext from '../../Context/selectionsContext';
+import LandingsOverView from '../LandingsOverView';
 
 class BoatDetails extends React.Component {
   static contextType = selectionsContext;
@@ -264,6 +265,9 @@ class BoatDetails extends React.Component {
           }}
           page={pageNo}
           defaultPageSize={resultCount}
+        />
+        <LandingsOverView
+          data={landings}
         />
       </div>
     );
