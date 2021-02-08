@@ -6,6 +6,7 @@ import OffloadsList from '../OffloadsList';
 import { normalizeMonth,norweganQueryParam } from '../../services/TextTools';
 import FilterCheckBox from '../FilterCheckBox';
 import LoadingAnimation from '../LoadingAnimation';
+import { el } from 'date-fns/locale';
 
 // https://fangsdata-api.herokuapp.com/api/offloads?fishingGear=Garn&Count=5
 
@@ -18,7 +19,6 @@ class FrontPage extends React.Component {
     let month = today.getMonth() + 1;
     const year = today.getFullYear();
     const day = today.getDate();
-    console.log(day)
     if (day === 1) {
       month -= 1;
     }
@@ -27,7 +27,13 @@ class FrontPage extends React.Component {
         {
           data: [],
           loaded: false,
-          title: "Top 10 krokredskap landing",
+          title: "Top 10 Fersk krokredskap landing",
+          link: "",
+        },
+        {
+          data: [],
+          loaded: false,
+          title: "Top 10 Frozen krokredskap landing",
           link: "",
         },
         {
@@ -85,7 +91,6 @@ class FrontPage extends React.Component {
  * @param {} data 
  */
   populateTables2 ( data ){
-
     let emptyList = [];
     data.forEach(() => {
       emptyList.push({loaded:false})
@@ -114,155 +119,216 @@ class FrontPage extends React.Component {
 
   async componentDidMount() {
     const { month,year } = this.state;
-    const { isMonth } = this.context;
+    const { isMonth,consivertionMethood } = this.context;
     if(isMonth !== null){
       this.setState({
-        monthOrYear:[ { title: 'måned', checkState: isMonth, value: 'month' }, { title: 'år', checkState: !isMonth, value: 'year' }],
+        monthOrYear: [ { title: 'måned', checkState: isMonth, value: 'month' }, { title: 'år', checkState: !isMonth, value: 'year' } ],
       });
-      if (isMonth){
-        this.populateTables2(
-          [
-            {
-              query: {  count: [10], fishingGear: ['Krokredskap'], month: [`${month},${month}`],year:[`${year},${year}`] },
-              title:  "Top 10 krokredskap landing i " + normalizeMonth(month),
-            },
-            {
-              query: { count: [10], fishingGear: ['Trål'], month: [`${month},${month}`],year:[`${year},${year}`] },
-              title:  "Top 10 trål landing i " + normalizeMonth(month),
-            },
-            { 
-              query: { count: [10], fishingGear: ['Snurrevad'], month: [`${month},${month}`],year:[`${year},${year}`] },
-              title:  "Top 10 snurrevad landing i " + normalizeMonth(month),
-            },
-            { 
-              query: { count: [10], fishingGear: ['Garn'], month: [`${month},${month}`],year:[`${year},${year}`] },
-              title:  "Top 10 garn landing i " + normalizeMonth(month),
-            },
-            { 
-              query: { count: [10], fishingGear: ['Pelagisk'], month: [`${month},${month}`],year:[`${year},${year}`] },
-              title:  "Top 10 pelagisk landing i " + normalizeMonth(month),
-            },
-          ],
-        ); 
-      }
-      else {
-        this.populateTables2 (
-          [
-            {
-              query: {  count: [10], fishingGear: ['Krokredskap'], month: [`1,12`],year:[`${year},${year}`] },
-              title: "Top 10 krokredskap landing i " + year,
-            },
-            {
-              query: { count: [10], fishingGear: ['Trål'], month: [`1,12`],year:[`${year},${year}`] },
-              title:  "Top 10 trål landing i " + year,
-            },
-            { 
-              query: { count: [10], fishingGear: ['Snurrevad'], month: [`1,12`],year:[`${year},${year}`] },
-              title:  "Top 10 snurrevad landing i " + year
-            },
-            { 
-              query: { count: [10], fishingGear: ['Garn'], month: [`1,12`],year:[`${year},${year}`] },
-              title: "Top 10 garn landing i " + year,
-            },
-            { 
-              query: { count: [10], fishingGear: ['Pelagisk'], month: [`1,12`],year:[`${year},${year}`] },
-              title: "Top 10 pelagisk landing i " + year,
-            }]);
-      }
-      
+    if(consivertionMethood != null){
+      this.setState({
+        preservationMethod:[
+          { title: 'all', checkState: consivertionMethood === 'all', value: 'all' }, 
+          { title: 'frozen', checkState: consivertionMethood === 'frozen', value: 'frozen' },
+          { title: 'fresh', checkState: consivertionMethood === 'fresh', value: 'fresh' },
+         ]
+
+      })
     }
-
-
-
-  }
-
-  inputEvent(event) {
-    const { target } = event;
-    const { monthOrYear, year, month } = this.state;
-    const { setIsMonth } = this.context;
-
-    setIsMonth(!monthOrYear[0].checkState);
-     
-    monthOrYear.forEach((item) => {
-      if (item.value !== target.value) {
-        item.checkState = false;
-      } else {
-        item.checkState = true;
+      let timeFrameSelector = [`${month},${month}`];
+      if (!isMonth){
+        timeFrameSelector = [`1,12`];
       }
-      this.setState(monthOrYear);
 
-      if (target.value === "year"){
-        this.populateTables2 (
+      let consivertionMethoodSelector = [consivertionMethood];
+      if (consivertionMethood === 'frozen' ){
+        consivertionMethoodSelector = ['Frossen'];
+      }
+      else if(consivertionMethood === 'fresh' ){
+        consivertionMethoodSelector = ['Fersk/ukonservert,Iset'];
+      }
+      else if ( consivertionMethood === 'all' ){
+        consivertionMethoodSelector = [];
+      }
+
+
+      this.populateTables2(
         [
           {
-            query: {  count: [10], fishingGear: ['Krokredskap'], month: [`1,12`],year:[`${year},${year}`] },
-            title: "Top 10 krokredskap landing i " + year,
+            query: { count: [10], fishingGear: ['Krokredskap'], 
+            preservationMethod: consivertionMethoodSelector, 
+            month: timeFrameSelector,year:[`${year},${year}`] },
+            title:  "Top 10 krokredskap landing",
           },
           {
-            query: { count: [10], fishingGear: ['Trål'], month: [`1,12`],year:[`${year},${year}`] },
-            title:  "Top 10 trål landing i " + year,
+            query: { count: [10], fishingGear: ['Trål'],
+            preservationMethod: consivertionMethoodSelector,
+            month: timeFrameSelector,year:[`${year},${year}`] },
+            title:  "Top 10 trål landing ",
           },
           { 
-            query: { count: [10], fishingGear: ['Snurrevad'], month: [`1,12`],year:[`${year},${year}`] },
-            title:  "Top 10 snurrevad landing i " + year
+            query: { count: [10], fishingGear: ['Snurrevad'],
+            preservationMethod: consivertionMethoodSelector,
+            month: timeFrameSelector,year:[`${year},${year}`] },
+            title:  "Top 10 snurrevad landing" ,
           },
           { 
-            query: { count: [10], fishingGear: ['Garn'], month: [`1,12`],year:[`${year},${year}`] },
-            title: "Top 10 garn landing i " + year,
+            query: { count: [10], fishingGear: ['Garn'],
+            preservationMethod: consivertionMethoodSelector,
+            month: timeFrameSelector,year:[`${year},${year}`] },
+            title:  "Top 10 garn landing",
           },
           { 
-            query: { count: [10], fishingGear: ['Pelagisk'], month: [`1,12`],year:[`${year},${year}`] },
-            title: "Top 10 pelagisk landing i " + year,
-          }]);
-      }
-      else { // month
-        this.populateTables2(
-          [
-            {
-              query: {  count: [10], fishingGear: ['Krokredskap'], month: [`${month},${month}`],year:[`${year},${year}`] },
-              title:  "Top 10 krokredskap landing i " + normalizeMonth(month),
-            },
-            {
-              query: { count: [10], fishingGear: ['Trål'], month: [`${month},${month}`],year:[`${year},${year}`] },
-              title:  "Top 10 trål landing i " + normalizeMonth(month),
-            },
-            { 
-              query: { count: [10], fishingGear: ['Snurrevad'], month: [`${month},${month}`],year:[`${year},${year}`] },
-              title:  "Top 10 snurrevad landing i " + normalizeMonth(month),
-            },
-            { 
-              query: { count: [10], fishingGear: ['Garn'], month: [`${month},${month}`],year:[`${year},${year}`] },
-              title:  "Top 10 garn landing i " + normalizeMonth(month),
-            },
-            { 
-              query: { count: [10], fishingGear: ['Pelagisk'], month: [`${month},${month}`],year:[`${year},${year}`] },
-              title:  "Top 10 pelagisk landing i " + normalizeMonth(month),
-            },
-          ]
-        );
-      }
-    });
+            query: { count: [10], fishingGear: ['Pelagisk'],
+            preservationMethod: consivertionMethoodSelector,
+            month: timeFrameSelector,year:[`${year},${year}`] },
+            title:  "Top 10 pelagisk landing",
+          }]); 
+    }
   }
 
+  inputEvent(event, radioGroup) {
+    const { target } = event;
+    const { monthOrYear, preservationMethod, year, month } = this.state;
+    const { setIsMonth,setConsivertionMethood, isMonth, consivertionMethood } = this.context;
+
+    
+    if(radioGroup === 'monthOrYear'){
+      setIsMonth(!monthOrYear[0].checkState);
+
+      monthOrYear.forEach((item) => {
+        if (item.value !== target.value) {
+          item.checkState = false;
+        } else {
+          item.checkState = true;
+        }
+        this.setState(monthOrYear);
+      });
+    }
+    else if (radioGroup === 'consivertionMethood') {
+      
+      setConsivertionMethood(target.value);
+    
+      preservationMethod.forEach((item)=>{
+          if (item.value !== target.value) {
+            item.checkState = false;
+          } else {
+            item.checkState = true;
+          }
+          this.setState(preservationMethod);
+        })
+      }
+      
+
+      let timeFrameSelector = [];
+      if (isMonth){
+        timeFrameSelector = [`${month},${month}`]; 
+      }
+      else {
+        timeFrameSelector = [`1,12`];
+      }
+
+      if (target.value === "year" ){
+        timeFrameSelector = [`1,12`];
+      }
+      else if (target.value === "month" ){
+        timeFrameSelector = [`${month},${month}`]; 
+      }
+
+      let consivertionMethoodSelector = [consivertionMethood];
+      if (consivertionMethood === 'frozen'  ){
+        consivertionMethoodSelector = ['Frossen'];
+      }
+      else if(consivertionMethood === 'fresh' ){
+        consivertionMethoodSelector = ['Fersk/ukonservert,Iset'];
+      }
+      else if ( consivertionMethood === 'all' ){
+        consivertionMethoodSelector = [];
+      }
+
+      if (target.value === 'frozen'  ){
+        consivertionMethoodSelector = ['Frossen'];
+      }
+      else if(target.value === 'fresh' ){
+        consivertionMethoodSelector = ['Fersk/ukonservert,Iset'];
+      }
+      else if ( target.value === 'all' ){
+        consivertionMethoodSelector = [];
+      }
+
+      this.populateTables2 (
+      [
+        {
+          query: {  
+            count: [10], fishingGear: ['Krokredskap'],
+            preservationMethod: consivertionMethoodSelector,
+            month: timeFrameSelector,year:[`${year},${year}`] },
+          title: "Top 10 krokredskap landing",
+        },
+        {
+          query: { 
+            count: [10], fishingGear: ['Trål'], 
+            preservationMethod: consivertionMethoodSelector, 
+            month: timeFrameSelector,year:[`${year},${year}`] },
+          title:  "Top 10 trål landing ",
+        },
+        { 
+          query: { 
+            count: [10], fishingGear: ['Snurrevad'], 
+            preservationMethod: consivertionMethoodSelector, 
+            month: timeFrameSelector,year:[`${year},${year}`] },
+          title:  "Top 10 snurrevad landing"
+        },
+        { 
+          query: { 
+            count: [10], fishingGear: ['Garn'],
+            preservationMethod: consivertionMethoodSelector, 
+            month: timeFrameSelector,year:[`${year},${year}`] },
+          title: "Top 10 garn landing",
+        },
+        { 
+          query: { count: [10], fishingGear: ['Pelagisk'],preservationMethod: consivertionMethoodSelector, month: timeFrameSelector,year:[`${year},${year}`] },
+          title: "Top 10 pelagisk landing",
+        }]);
+  }
   render() {
     const {
       offloads,
       upDatedOn,
-      monthOrYear 
+      monthOrYear,
+      preservationMethod 
     } = this.state;
     return (
        <>
-        <FilterCheckBox
-          key="monthOrYear"
-          items={monthOrYear}
-          group="monthOrYear"
-          inputEvent={(e)=>{
-            this.inputEvent(e);
+       <div style={{
+         display: "flex",
+         justifyContent: "center"
+        }}>
+        
+          <p style={{paddingTop: "5px"}}>Tidsramme :  </p>
+          <FilterCheckBox
+            key="monthOrYear"
+            items={monthOrYear}
+            group="monthOrYear"
+            inputEvent={(e)=>{
+              this.inputEvent(e, 'monthOrYear');
 
-          }}
-          checkBoxType="radio"
-          cssFilterContainer = 'front-list-time-period'
-        />
+            }}
+            checkBoxType="radio"
+            cssFilterContainer = 'front-list-time-period'
+          />
+          <p style={{paddingTop: "5px"}}>Konserveringsmåte : </p>
+          <FilterCheckBox
+            key="consivertionMethood"
+            items={preservationMethod}
+            group="consivertionMethood"
+            inputEvent={(e)=>{
+              this.inputEvent(e, 'consivertionMethood');
+
+            }}
+            checkBoxType="radio"
+            cssFilterContainer = 'front-list-time-period'
+          />
+        </div>
       <div className="front-page">
         {offloads.map( offload => (
           <FrontPageList 

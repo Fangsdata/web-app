@@ -12,6 +12,8 @@ const selectionsContext = createContext(
         setTopLandingPageNo: ()=>{}, 
         topLandingsPageCount:null,
         setTopLandingPageCount:()=>{},
+        consivertionMethood:null,
+        setConsivertionMethood:()=>{},
     }
 );
 

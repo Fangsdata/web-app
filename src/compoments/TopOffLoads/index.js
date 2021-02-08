@@ -16,24 +16,28 @@ class TopOffLoads extends React.Component {
   constructor(props) {
     super(props);
 
-    const paramsFromQuery = generateObjectFromQueryParameters(props.location.search);
+    let paramsFromQuery = generateObjectFromQueryParameters(props.location.search) || [];
     const today = new Date();
     let month = today.getMonth() + 1;
     const day = today.getDate();
+    if(paramsFromQuery['konserveringsmate'] === undefined){
+      paramsFromQuery['konserveringsmate'] = []; 
+    } 
     if(day === 1){
       month -= 1;
     }
     this.state = {
       offLoads: [],
       filter: {
-        fishingGear:  paramsFromQuery['redskap'] || [],
-        boatLength:   paramsFromQuery['lengde'] || [],
-        fishName:     paramsFromQuery['fisketype'] || [],
-        month:        paramsFromQuery['maned'] || [month,month],
-        year:         paramsFromQuery['ar'] || [],
-        landingState: paramsFromQuery['fylke'] || [],
-        pageNo:       paramsFromQuery['pageNo'] || [1],
-        count:        paramsFromQuery['count'] || [10]
+        fishingGear:        paramsFromQuery['redskap'] || [],
+        boatLength:         paramsFromQuery['lengde'] || [],
+        fishName:           paramsFromQuery['fisketype'] || [],
+        preservationMethod: paramsFromQuery['Konserveringsmate'] || [],
+        month:              paramsFromQuery['maned'] || [month,month],
+        year:               paramsFromQuery['ar'] || [],
+        landingState:       paramsFromQuery['fylke'] || [],
+        pageNo:             paramsFromQuery['pageNo'] || [1],
+        count:              paramsFromQuery['count'] || [10]
       },
       allFilters: {
         /* eslint-disable */
@@ -75,7 +79,30 @@ class TopOffLoads extends React.Component {
           { title: 'Akershus', checkState:paramsFromQuery['fylke'] == 'akershus' ||  false, value: 'Akershus' },
           { title: 'Oslo', checkState: paramsFromQuery['fylke'] == 'oslo' || false, value: 'Oslo' },
           { title: 'Buskerud', checkState: paramsFromQuery['fylke'] == 'buskerud' || false, value: 'Buskerud' }],
+        preservationMethod: [{ title: 'Ensilert', value: 'Ensilert', checkState: paramsFromQuery['konserveringsmate'].includes('ensilert') || false },
+          { title: 'Rfw', value: 'Rfw', checkState: paramsFromQuery['konserveringsmate'].includes('rfw') || false },
+          { title: 'Rsw', value: 'Rsw', checkState: paramsFromQuery['konserveringsmate'].includes('rsw') || false },
+          { title: 'Saltet', value: 'Saltet', checkState: paramsFromQuery['konserveringsmate'].includes('saltet') || false },
+          { title: 'Sukkersaltet', value: 'Sukkersaltet', checkState: paramsFromQuery['konserveringsmate'].includes('sukkersaltet') || false },
+          { title: 'Tørket', value: 'Tørket', checkState: paramsFromQuery['konserveringsmate'].includes('tørket') || false },
+          { title: 'Rsw og is', value: 'Rsw og is', checkState: paramsFromQuery['konserveringsmate'].includes('rsw og is') || false },
+          { title: 'Rfw og ozon', value: 'Rfw og ozon', checkState: paramsFromQuery['konserveringsmate'].includes('rfw og ozon') || false },
+          { title: 'Fersk/ukonservert', value: 'Fersk/ukonservert', checkState: paramsFromQuery['konserveringsmate'].includes('fersk/ukonservert') || false },
+          { title: 'Rsw og ozon', value: 'Rsw og ozon', checkState: paramsFromQuery['konserveringsmate'].includes('rsw og ozon') || false },
+          { title: 'Rfw og is', value: 'Rfw og is', checkState: paramsFromQuery['konserveringsmate'].includes('rfw og is') || false },
+          { title: 'Rfw og syre', value: 'Rfw og syre', checkState: paramsFromQuery['konserveringsmate'].includes('rfw og syre') || false },
+          { title: 'Sws Seawater slush (issørpe av', value: 'Sws Seawater slush (issørpe av', checkState: paramsFromQuery['konserveringsmate'].includes('sws seawater slush (issørpe av') || false },
+          { title: 'Rfw + "Soft Eddik"', value: 'Rfw + "Soft Eddik"', checkState: paramsFromQuery['konserveringsmate'].includes('rfw + "soft Eddik"') || false },
+          { title: 'Fersk saltkokt', value: 'Fersk saltkokt', checkState: paramsFromQuery['konserveringsmate'].includes('fersk saltkokt') || false },
+          { title: 'Fryst og glasert', value: 'Fryst og glasert', checkState: paramsFromQuery['konserveringsmate'].includes('fryst og glasert') || false },
+          { title: 'Antioksdantbehandlet og fryst', value: 'Antioksdantbehandlet og fryst', checkState: paramsFromQuery['konserveringsmate'].includes('antioksdantbehandlet og fryst') || false },
+          { title: 'Fersk sjøkokt', value: 'Fersk sjøkokt', checkState: paramsFromQuery['konserveringsmate'].includes('fersk sjøkokt') || false },
+          { title: 'Frossen', value: 'Frossen', checkState: paramsFromQuery['konserveringsmate'].includes('frossen') || false },
+          { title: 'Frossen saltkokt', value: 'Frossen saltkokt', checkState: paramsFromQuery['konserveringsmate'].includes('frossen saltkokt') || false },
+          { title: 'Iset', value: 'Iset', checkState: paramsFromQuery['konserveringsmate'].includes('iset') || false },
+          { title: 'Uspesifisert', value: 'Uspesifisert', checkState: paramsFromQuery['konserveringsmate'].includes('uspesifisert') || false }],
           /* eslint-enable */
+
       },
       topOffloadsLoaded: false,
       topOfflodError: false,

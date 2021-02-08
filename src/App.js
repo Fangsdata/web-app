@@ -33,19 +33,22 @@ function App() {
   const [boatOffloadPageCount,  setBoatOffloadPageCount] = useState(5);
   const [topLandingsPageNo,     setTopLandingPageNo] = useState(1);
   const [topLandingsPageCount,  setTopLandingPageCount] = useState(10);
+  const [consivertionMethood,   setConsivertionMethood] = useState('all');
    
   const value = useMemo(()=>({
     isMonth,              setIsMonth,
     boatOffloadPageNo,    setBoatOffloadPageNo,
     boatOffloadPageCount, setBoatOffloadPageCount,
     topLandingsPageNo,    setTopLandingPageNo,
-    topLandingsPageCount, setTopLandingPageCount ,
+    topLandingsPageCount, setTopLandingPageCount,
+    consivertionMethood,   setConsivertionMethood,
   }),[
     isMonth,              setIsMonth,
     boatOffloadPageNo,    setBoatOffloadPageNo,
     boatOffloadPageCount, setBoatOffloadPageCount,
     topLandingsPageNo,    setTopLandingPageNo,
     topLandingsPageCount, setTopLandingPageCount,
+    consivertionMethood,   setConsivertionMethood
   ])
 
   return (

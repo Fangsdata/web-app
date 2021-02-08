@@ -80,14 +80,17 @@ export const normalizeMonth = (e) => {
 };
 
 export const generateObjectFromQueryParameters = (inputString) => {
+  console.log(inputString)
   if(inputString === ""){
     return "";
   }
   let jsObject = {};
   let params = inputString.substr(1).toLowerCase().split("&");
   params.forEach(param => {
-    let item = param.split('=');
-    jsObject[item[0]] = item[1].split(',');
+    if(param.includes('=')){
+      let item = param.split('=');
+      jsObject[item[0]] = item[1].split(',');
+    }
   });
   return jsObject;
 }
@@ -96,18 +99,18 @@ export const generateObjectFromQueryParameters = (inputString) => {
 
 export const translateGroupNames = (input) => {
   switch (input) {
-    case 'fishingGear': return 'redskap';
-    case 'boatLength': return 'lengde';
-    case 'fishName': return 'fisketype';
-    case 'landingState': return 'fylke';
-    case 'year': return 'ar';
-    case 'month': return 'maned';
-    default: return '';
+    case 'fishingGear':         return 'redskap';
+    case 'boatLength':          return 'lengde';
+    case 'fishName':            return 'fisketype';
+    case 'landingState':        return 'fylke';
+    case 'preservationMethod':  return 'Konserveringsmate';
+    case 'year':                return 'ar';
+    case 'month':               return 'maned';
+    default:                    return '';
   }
 }
 
 export const generateQueryParamFromObject = (inputObj) => {
-
   let queryString = '?';
   Object.keys(inputObj).forEach((key)=>{
     queryString += key + '=';
