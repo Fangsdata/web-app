@@ -17,7 +17,8 @@ class FrontPage extends React.Component {
     const today = new Date();
     let month = today.getMonth() + 1;
     const year = today.getFullYear();
-    const day = today.getDay();
+    const day = today.getDate();
+    console.log(day)
     if (day === 1) {
       month -= 1;
     }

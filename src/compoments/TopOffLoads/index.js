@@ -19,7 +19,7 @@ class TopOffLoads extends React.Component {
     const paramsFromQuery = generateObjectFromQueryParameters(props.location.search);
     const today = new Date();
     let month = today.getMonth() + 1;
-    const day = today.getDay();
+    const day = today.getDate();
     if(day === 1){
       month -= 1;
     }
