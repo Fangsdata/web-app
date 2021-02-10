@@ -3,15 +3,17 @@ import { string } from 'prop-types';
 import VesselMap from '../Map';
 import LandingsTable from '../LandingsTable';
 import LandingsTableControlls from '../LandingsTableControlls';
-import { normalizeCase, normalizeLength, normalizeWeight } from '../../services/TextTools';
+import { normalizeCase, normalizeLength, normalizeWeight,normalizeDateForWeb } from '../../services/TextTools';
 import boaticon from './boat.png';
 import selectionsContext from '../../Context/selectionsContext';
 import LandingsOverView from '../LandingsOverView';
+import DatePicker from 'react-datepicker';
 
 class BoatDetails extends React.Component {
   static contextType = selectionsContext;
   constructor(props) {
     super(props);
+    const today = new Date();
     this.state = {
       boat: {
         id: '',
@@ -41,12 +43,14 @@ class BoatDetails extends React.Component {
       boatOffloadLoaded: false,
       boatDetailError: false,
       boatOffloadError: false,
+      fromDate: new Date(today.getFullYear(),0), 
+      toDate: today
     };
   }
 
   async componentDidMount() {
     const { boatname, boatRadio } = this.props;
-    const { pageNo, resultCount } = this.state;
+    const { pageNo, resultCount, fromDate, toDate } = this.state;
     const { boatOffloadPageCount,boatOffloadPageNo } = this.context;
 
     this.setState({
@@ -70,11 +74,8 @@ class BoatDetails extends React.Component {
 
       })
       .catch(() => this.setState({ boatDetailError: true }));
+    this.updateOffloadList(fromDate, toDate);
 
-    fetch(`https://fangsdata-api.herokuapp.com/api/offloads/${boatname}/${resultCount}/${pageNo}`)
-      .then((res2) => res2.json())
-      .then((res2) => this.setState({ landings: res2, boatOffloadLoaded: true }))
-      .catch((() => this.setState({ boatOffloadLoaded: true })));
     if(boatRadio !== ""){
       fetch(`https://fangsdata-api.herokuapp.com/api/maps/boats/radio/${boatRadio}`)
         .then(res => res.json())
@@ -85,16 +86,10 @@ class BoatDetails extends React.Component {
 
 
   async componentDidUpdate(prevProps, prevState) {
-    const { pageNo, resultCount } = this.state;
+    const { pageNo, resultCount, fromDate, toDate } = this.state;
     const { boatname,boatRadio } = this.props;
     if (pageNo !== prevState.pageNo || resultCount !== prevState.resultCount) {
-      this.setState({ boatOffloadLoaded: false, boatDetailError: false, boatOffloadError: false });
-      this.setState({ landings: [] });
-      fetch(`https://fangsdata-api.herokuapp.com/api/offloads/${boatname}/${resultCount}/${pageNo}`)
-        .then((res2) => res2.json())
-        .then((res2) => {
-          this.setState({ landings: res2, boatOffloadLoaded: true });
-        });
+      this.updateOffloadList(fromDate, toDate);
     }
     if (boatname !== prevProps.boatname) {
       this.setState({ boatOffloadLoaded: false, boatDetailError: false, boatOffloadError: false });
@@ -114,12 +109,20 @@ class BoatDetails extends React.Component {
       })
       .catch(() => this.setState({ boatDetailError: true }));
 
-      fetch(`https://fangsdata-api.herokuapp.com/api/offloads/${boatname}/${resultCount}/${pageNo}`)
-        .then((res2) => res2.json())
-        .then((res2) => {
-          this.setState({ landings: res2, boatOffloadLoaded: true });
-        });
+
+      this.updateOffloadList(fromDate, toDate);
     }
+  }
+
+  updateOffloadList(fromDate, toDate){
+    const { boatname } = this.props;
+    this.setState({ boatOffloadLoaded: false, boatDetailError: false, boatOffloadError: false });
+    this.setState({ landings: [] });
+    fetch(`https://fangsdata-api.herokuapp.com/api/offloads/${boatname}/date/${normalizeDateForWeb(fromDate)}/${normalizeDateForWeb(toDate)}`)
+    .then((res2) => res2.json())
+    .then((res2) => {
+      this.setState({ landings: res2, boatOffloadLoaded: true });
+    }); 
   }
 
   render() {
@@ -132,7 +135,9 @@ class BoatDetails extends React.Component {
       boatDetailError,
       boatOffloadError,
       boat,
-      mapData
+      mapData,
+      fromDate,
+      toDate,
     } = this.state;
 
     const {
@@ -241,32 +246,60 @@ class BoatDetails extends React.Component {
           landingNo={(pageNo - 1) * resultCount}
           boatOffloadLoaded={boatOffloadLoaded}
           boatOffloadError={boatOffloadError}
-        />
-        <LandingsTableControlls
-          nextPage={() => {
-            let page = pageNo;
-            page += 1;
-            setBoatOffloadPageNo(page);
-            this.setState({ pageNo: page });
-          }}
-          prevPage={() => {
-            let page = pageNo;
-            if (page > 1) {
-              page -= 1;
-              setBoatOffloadPageNo(page);
-              this.setState({ pageNo: page });
-            }
-          }}
-          resultNo={(no) => {
-            let page = pageNo;
-            page = 1;
-            setBoatOffloadPageNo(page);
-            setBoatOffloadPageCount(no);
-            this.setState({ resultCount: no, pageNo: page });
-          }}
-          page={pageNo}
-          defaultPageSize={resultCount}
-        />
+        />{false
+          ? <LandingsTableControlls
+                nextPage={() => {
+                  let page = pageNo;
+                  page += 1;
+                  setBoatOffloadPageNo(page);
+                  this.setState({ pageNo: page });
+                }}
+                prevPage={() => {
+                  let page = pageNo;
+                  if (page > 1) {
+                    page -= 1;
+                    setBoatOffloadPageNo(page);
+                    this.setState({ pageNo: page });
+                  }
+                }}
+                resultNo={(no) => {
+                  let page = pageNo;
+                  page = 1;
+                  setBoatOffloadPageNo(page);
+                  setBoatOffloadPageCount(no);
+                  this.setState({ resultCount: no, pageNo: page });
+                }}
+                page={pageNo}
+                defaultPageSize={resultCount}
+              />
+          :<div className="controls-container">
+           <DatePicker
+                selected={fromDate}
+                dateFormat="MM/yyyy"
+                onChange={(date) => {
+                  const {  toDate } = this.state;
+                  this.setState({fromDate: date});
+                  this.updateOffloadList( date, toDate );
+                }}
+                showMonthYearPicker
+                showFullMonthYearPicker
+              />
+            <DatePicker
+                selected={toDate}
+                dateFormat="MM/yyyy"
+                onChange={(date) => {
+                  const { fromDate } = this.state;
+                  this.setState({toDate: date});
+
+                  this.updateOffloadList(fromDate, date);
+                }}
+                showMonthYearPicker
+                showFullMonthYearPicker
+              />
+          </div>
+
+        }
+
         <LandingsOverView
           data={landings}
         />

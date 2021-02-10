@@ -60,6 +60,8 @@ export const shortinString = (input, desiredLength) => {
 } 
 export const normalizeDate = (e) => format(new Date(e), 'd/M/yyyy');
 
+export const normalizeDateForWeb = (e) => format(new Date(e), 'yyyy-M-d');
+
 export const normalizeMonth = (e) => {
   switch (e) {
     case 0: return '';

@@ -6,6 +6,7 @@ import { Bar } from 'react-chartjs-2';
 import { normalizeDate } from '../../services/TextTools';
 import { GenerateGraphData } from '../../services/graphService';
 
+
 const LandingsOverView = (({data, type, graphHeight, graphWidth, mixCutoffPoint, mixCutoffName})=> {
     
     const [barDataset,setBarData] = useState(
