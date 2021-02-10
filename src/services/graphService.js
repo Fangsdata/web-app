@@ -3,17 +3,16 @@ import { normalizeDate } from "./TextTools";
 export const generateColors = (size) => {
 
     const colorExample = [
-        '#2B59C3', //Blue
-        '#2bc363', //Green
-        '#f5e536', //Yellow
-        '#c32b2b', //red
-        '#2bc0c3', //light blue
-        '#c3742b', //pink
-        '#c32ba5', //orange
-        '#93c32b', //light green
-        '#0a1d4a', //Svartur
-        '#982bc3', //purple
-        '#d7e1f7', //hvítur
+
+        '#03045E', //Blue
+        '#023E8A', //Green
+        '#0077B6', //Yellow
+        '#0096C7', //red
+        '#00B4D8', //light blue
+        '#48CAE4', //pink
+        '#90E0EF', //orange
+        '#ADE8F4', //light green
+        '#CAF0F8', //Svartur
     
     ];
     const retData = [];
@@ -61,15 +60,14 @@ export class GenerateGraphData {
     }    
 
     generateBarDataShcema () {
-        
         return this.barRows.map( (i, len) => {
             return {  label: i,
-                      backgroundColor: this.colors[len],
-                      borderColor: 'rgba(0,0,0,1)',
-                      borderWidth: 2,
+                      backgroundColor: this.colors[len] + 'ee',
+                      borderColor: '#000000cc',
+                      hoverBackgroundColor: this.colors[len] + 'bb',
+                      borderWidth: .5,
                       data: this.data.map((j) => {
                         if (typeof(j.fish) === 'object'){
-                          
                           return j.fish.reduce((acc, curr ) => {
                             if (curr.type === i){
                               return curr.weight + acc;
@@ -79,9 +77,11 @@ export class GenerateGraphData {
                             }
                           }, 0)
                         }
+                        else{
+                          return [];
+                        }
                       }).reverse()
                     }});
-        
     }
     generateBarRows () {
         let tempBarRows = [];

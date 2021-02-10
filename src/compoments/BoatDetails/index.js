@@ -122,7 +122,7 @@ class BoatDetails extends React.Component {
     .then((res2) => res2.json())
     .then((res2) => {
       this.setState({ landings: res2, boatOffloadLoaded: true });
-    }); 
+    });
   }
 
   render() {
