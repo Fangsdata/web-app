@@ -4,75 +4,22 @@ import PropTypes, {
   } from 'prop-types';
 import { Bar } from 'react-chartjs-2';
 import { normalizeDate } from '../../services/TextTools';
-import { generateColors } from '../../services/graphService';
+import { GenerateGraphData } from '../../services/graphService';
 
-const LandingsOverView = (({data, type})=> {
+const LandingsOverView = (({data, type, graphHeight, graphWidth, mixCutoffPoint, mixCutoffName})=> {
     
     const [barDataset,setBarData] = useState(
     )
 
     useEffect(()=>{
+
+      let graphData = new GenerateGraphData(data);
+
       if (type === 'simple'){
 
+        graphData.reduceData(mixCutoffPoint, mixCutoffName);
 
-        let posibleFishTypes = [];
-
-        // Reduces colums by taking out fish that are less
-        // that 5% of the total weitht
-        data = data.map(i => {
-          if (typeof(i.fish) === 'object'){
-            i.fish = i.fish.map((j)=> {
-              if( j.weight / i.totalWeight < 0.05 ){
-                j.type = 'resten';
-                return j;
-              }
-              else {
-                return j;
-              }
-            })
-          }
-          return i;
-        })
-
-        // Generetes array of all the color names 
-        data.forEach(i => {
-          if (typeof(i.fish) === 'object'){
-            i.fish.forEach( j => {
-              if(!posibleFishTypes.some( k => k === j.type )){
-                posibleFishTypes.push(j.type); 
-              }
-            })
-          }
-        });
-        const colors = generateColors(posibleFishTypes.length);
-        // Maps all the data to fir the chartjs schema
-        let barData = posibleFishTypes.map( (i, len) => {
-          return {  label: i,
-                    backgroundColor: colors[len],
-                    borderColor: 'rgba(0,0,0,1)',
-                    borderWidth: 2,
-                    data: data.map((j) => {
-                      if (typeof(j.fish) === 'object'){
-                        
-                        return j.fish.reduce((acc, curr ) => {
-                          if (curr.type === i){
-                            return curr.weight + acc;
-                          }
-                          else{
-                            return acc;
-                          }
-                        }, 0)
-                      }
-                    }).reverse()
-                  }});
-          
-        
-        const barLabels = data.map((i)=>{ return normalizeDate(i.landingDate)});
-        console.log(barData)
-        setBarData({
-              labels:barLabels.reverse(),
-              datasets:barData,}
-          );
+        setBarData(graphData.generateBarData());
       } 
       else if ( type === 'by-month') {
 
@@ -86,8 +33,8 @@ const LandingsOverView = (({data, type})=> {
     return(<><Bar
                 data={barDataset}                      
                 redraw
-                width={800}
-                height={400}
+                width={graphWidth}
+                height={graphHeight}
                 options={{
                     scales: {
                         xAxes: [{
@@ -112,11 +59,19 @@ LandingsOverView.propTypes = {
         state: string.isRequired,
         totalWeight: number.isRequired,
       }).isRequired).isRequired,
-      type: string
+      type: string,
+      graphHeight: number,
+      graphWidth: number,
+      mixCutoffPoint: number, 
+      mixCutoffName: string,
 };
 
 LandingsOverView.defaultProps = {
-  type: 'simple' // by-month, by-year
+  type: 'simple', // by-month, by-year
+  graphHeight: 400,
+  graphWidth: 800,
+  mixCutoffPoint: 0.05,
+  mixCutoffName: 'resten'
 }
 
 export default LandingsOverView;
