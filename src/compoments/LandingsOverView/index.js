@@ -4,62 +4,90 @@ import PropTypes, {
   } from 'prop-types';
 import { Bar } from 'react-chartjs-2';
 import { normalizeDate } from '../../services/TextTools';
+import { generateColors } from '../../services/graphService';
 
-
-const LandingsOverView = (({data})=>{
+const LandingsOverView = (({data, type})=> {
     
     const [barDataset,setBarData] = useState(
-        /*
-        {
-            labels: ['January', 'February', 'March',
-                     'April', 'May'],
-            datasets: [
-              {
-                label: 'Rainfall',
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: [65, 59, 80, 81, 56]
-              },
-              {
-                label: 'sunFall',
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: [65, 59, 80, 81, 56]
-              }, 
-            ]
-          }*/
     )
+
     useEffect(()=>{
-
-        
-
+      if (type === 'simple'){
 
 
-        const barData = {
-            label: 'Total Vekt',
-            backgroundColor: '#2B59C3',
-            borderColor: 'rgba(0,0,0,1)',
-            borderWidth: 2,
-            data: data.map((i)=>{ return i.totalWeight }) 
-        }
+        let posibleFishTypes = [];
+
+        // Reduces colums by taking out fish that are less
+        // that 5% of the total weitht
+        data = data.map(i => {
+          if (typeof(i.fish) === 'object'){
+            i.fish = i.fish.map((j)=> {
+              if( j.weight / i.totalWeight < 0.05 ){
+                j.type = 'resten';
+                return j;
+              }
+              else {
+                return j;
+              }
+            })
+          }
+          return i;
+        })
+
+        // Generetes array of all the color names 
+        data.forEach(i => {
+          if (typeof(i.fish) === 'object'){
+            i.fish.forEach( j => {
+              if(!posibleFishTypes.some( k => k === j.type )){
+                posibleFishTypes.push(j.type); 
+              }
+            })
+          }
+        });
+        const colors = generateColors(posibleFishTypes.length);
+        // Maps all the data to fir the chartjs schema
+        let barData = posibleFishTypes.map( (i, len) => {
+          return {  label: i,
+                    backgroundColor: colors[len],
+                    borderColor: 'rgba(0,0,0,1)',
+                    borderWidth: 2,
+                    data: data.map((j) => {
+                      if (typeof(j.fish) === 'object'){
+                        
+                        return j.fish.reduce((acc, curr ) => {
+                          if (curr.type === i){
+                            return curr.weight + acc;
+                          }
+                          else{
+                            return acc;
+                          }
+                        }, 0)
+                      }
+                    }).reverse()
+                  }});
+          
         
         const barLabels = data.map((i)=>{ return normalizeDate(i.landingDate)});
+        console.log(barData)
+        setBarData({
+              labels:barLabels.reverse(),
+              datasets:barData,}
+          );
+      } 
+      else if ( type === 'by-month') {
 
-        setBarData(
-            {
-                labels:barLabels,
-                datasets:[barData],
-            }
-            );
+      } 
+      else if ( type === 'by-year') {
+        
+      }
+
     },[data]);
 
-    return(<Bar
+    return(<><Bar
                 data={barDataset}                      
                 redraw
                 width={800}
-                height={300} // ef ég er á síma þá þarf þetta að vera stærra 
+                height={400}
                 options={{
                     scales: {
                         xAxes: [{
@@ -70,7 +98,10 @@ const LandingsOverView = (({data})=>{
                         }]
                     }
                 }}
-                />);
+                />
+                <p>Controls</p>
+                </>);
+
 });
 
 LandingsOverView.propTypes = {
@@ -81,6 +112,11 @@ LandingsOverView.propTypes = {
         state: string.isRequired,
         totalWeight: number.isRequired,
       }).isRequired).isRequired,
+      type: string
+};
+
+LandingsOverView.defaultProps = {
+  type: 'simple' // by-month, by-year
 }
 
 export default LandingsOverView;

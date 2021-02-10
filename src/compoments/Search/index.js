@@ -6,7 +6,7 @@ const Search = ({term}) => {
     const [foundBoats, setFoundBoats] = useState([]);
 
     useEffect(() => {
-        fetch(`${OFFLOADAPI}/search/boats/${term}`)
+        fetch(`${OFFLOADAPI}/search/boats/${term}/100/1`)
         .then((res) => res.json())
         .then((res) => {
             let filteredRes = res.map(({name, registration_id, state, fishingGear}) => ({name, registration_id, state, fishingGear}));

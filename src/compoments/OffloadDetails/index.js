@@ -8,6 +8,7 @@ import Anchor from './anchor.svg';
 import filterImg from './filter_list-24px.svg';
 import UpArrowImg from './arrow_drop_up-24px.svg';
 import DownArrowImg from './arrow_drop_down-24px.svg';
+import { generateColors } from '../../services/graphService';
 
 const OffloadDetails = ({ date, registrationId }) => {
   const [chartData, setChartData] = useState(
@@ -36,14 +37,6 @@ const OffloadDetails = ({ date, registrationId }) => {
     Rundvekt: true
   })
 
-  const generateColors = (size) => {
-    const colorExample = ['#2B59C3', '#B7DFB3', '#DCB8B8', '#DCD8B8'];
-    const retData = [];
-    for (let i = 0; i < size; i++) {
-      retData.push(colorExample[i % colorExample.length]);
-    }
-    return retData;
-  };
   const CreatePieChartDataset = (data, dataInputCutoff) => {
     
     // ATH skítamix til að geta notað FilterOffloadDataSet

@@ -15,10 +15,10 @@ const ResultTable = (({title,headers, items })=>{
         ?items.map((row, i) => (
             <Link to={`/boats/${row['registration_id']}`}>
                 <div className="offload-row">
-                <p className="offload-index">{i+1}</p>
-                {Object.keys(row).map((col, i)=>(i === 0
-                ?<p className="offload-name">{row[col]}</p>
-                :<p className="offload-group">{row[col]}</p>))}
+                    <p className="offload-index">{i+1}</p>
+                    {Object.keys(row).map((col, i)=>(i === 0
+                    ?<p className="offload-name">{row[col]}</p>
+                    :<p className="offload-group">{row[col]}</p>))}
                 </div>
             </Link>
         ))

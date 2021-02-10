@@ -129,7 +129,7 @@ class FrontPage extends React.Component {
         preservationMethod:[
           { title: 'all', checkState: consivertionMethood === 'all', value: 'all' }, 
           { title: 'frozen', checkState: consivertionMethood === 'frozen', value: 'frozen' },
-          { title: 'fresh', checkState: consivertionMethood === 'fresh', value: 'fresh' },
+          { title: 'fersk', checkState: consivertionMethood === 'fresh', value: 'fresh' },
          ]
 
       })
@@ -301,10 +301,10 @@ class FrontPage extends React.Component {
        <>
        <div style={{
          display: "flex",
+         flexDirection: "column",
          justifyContent: "center"
         }}>
-        
-          <p style={{paddingTop: "5px"}}>Tidsramme :  </p>
+          <div style={{ height:'1.5rem'}}>
           <FilterCheckBox
             key="monthOrYear"
             items={monthOrYear}
@@ -316,7 +316,8 @@ class FrontPage extends React.Component {
             checkBoxType="radio"
             cssFilterContainer = 'front-list-time-period'
           />
-          <p style={{paddingTop: "5px"}}>Konserveringsmåte : </p>
+          </div>
+          <div style={{ height:'0em'}}>
           <FilterCheckBox
             key="consivertionMethood"
             items={preservationMethod}
@@ -328,6 +329,7 @@ class FrontPage extends React.Component {
             checkBoxType="radio"
             cssFilterContainer = 'front-list-time-period'
           />
+          </div>
         </div>
       <div className="front-page">
         {offloads.map( offload => (

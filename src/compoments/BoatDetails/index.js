@@ -234,6 +234,7 @@ class BoatDetails extends React.Component {
             </div>
           )
           : <></>}
+
         <LandingsTable
           landings={landings}
           registrationId={registrationId}
