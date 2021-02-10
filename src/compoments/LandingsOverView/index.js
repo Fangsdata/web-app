@@ -16,16 +16,26 @@ const LandingsOverView = (({data, type, graphHeight, graphWidth, mixCutoffPoint,
       let graphData = new GenerateGraphData(data);
 
       if (type === 'simple'){
-
         graphData.reduceData(mixCutoffPoint, mixCutoffName);
-
         setBarData(graphData.generateBarData());
       } 
       else if ( type === 'by-month') {
 
+        graphData
+        .reduceData(mixCutoffPoint, mixCutoffName)
+        .combineMonths();
+        // graphData.setLabels ??
+        setBarData(graphData.generateBarData());
+
       } 
       else if ( type === 'by-year') {
         
+        graphData
+        .reduceData(mixCutoffPoint, mixCutoffName)
+        .combineYeras();
+        // graphData.setLabels ??
+        setBarData(graphData.generateBarData());
+
       }
 
     },[data]);
