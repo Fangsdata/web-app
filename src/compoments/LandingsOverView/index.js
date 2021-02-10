@@ -56,7 +56,6 @@ const LandingsOverView = (({data, type, graphHeight, graphWidth, mixCutoffPoint,
                     }
                 }}
                 />
-                <p>Controls</p>
                 </>);
 
 });
