@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 // import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import './Styles/base.css';
@@ -21,13 +19,9 @@ import './Styles/footer.css';
 
 
 ReactDOM.render(
-  <Provider
-    store={createStore(boatReducer)}
-  >
     <Router>
       <App />
-    </Router>
-  </Provider>,
+    </Router>,
   document.getElementById('root'),
 );
 

@@ -20,8 +20,11 @@ async function getDataFromApi(filter) {
   params = params.substring(0, params.length - 1);
 
   url += params;
+  console.log(url);
   const resp = await fetch(url);
+  console.log(resp);
   const json = await resp.json();
+  console.log(json);
   return json;
 }
 

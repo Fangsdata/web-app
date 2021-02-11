@@ -4,15 +4,15 @@ export const generateColors = (size) => {
 
     const colorExample = [
 
-        '#03045E', //Blue
-        '#023E8A', //Green
-        '#0077B6', //Yellow
-        '#0096C7', //red
-        '#00B4D8', //light blue
-        '#48CAE4', //pink
-        '#90E0EF', //orange
-        '#ADE8F4', //light green
-        '#CAF0F8', //Svartur
+        '#03045E', 
+        '#023E8A', 
+        '#0077B6', 
+        '#0096C7', 
+        '#00B4D8', 
+        '#48CAE4', 
+        '#90E0EF', 
+        '#ADE8F4', 
+        '#CAF0F8', 
     
     ];
     const retData = [];
@@ -27,8 +27,8 @@ export class GenerateGraphData {
     constructor(data){
         this.data = data;
 
-        this.colors = generateColors(data.length);
         this.barLabels = this.generateBarLabels();
+        this.colors = []; 
         this.barRows = this.generateBarRows();
     };
 
@@ -106,6 +106,7 @@ export class GenerateGraphData {
 
     generateBarData(){
         this.barRows = this.generateBarRows();
+        this.colors = generateColors(this.barRows.length); 
 
         return {
             labels: this.barLabels,
