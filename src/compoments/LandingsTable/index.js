@@ -9,11 +9,7 @@ const LandingsTable = ({
   landings,registrationId, landingNo, boatOffloadLoaded, boatOffloadError,
 }) => (
   <div className="offload-table landing-table">
-    <div className="offload-header">Siste landinger</div>
-    {/* <td>Dato</td>
-      <td>Kommune</td>
-      <td>Fylke</td>
-      <td>Total vekt</td> */}
+    <div className="offload-header">Siste lendinger</div>
     <div className="offload-row">
       <p className="offload-index">#</p>
       <p className="offload-name">Dato</p>
@@ -39,6 +35,7 @@ const LandingsTable = ({
                 </div>
               </Link>
             ))
+
             : (
               <div className="loader">
                 Loading
@@ -47,6 +44,15 @@ const LandingsTable = ({
         </>
       )
       : <p>there was an error here</p>}
+        <a>
+        <div className="offload-row">
+            <p className="offload-index"></p>
+            <p className="offload-name"></p>
+            <p className="offload-group"></p>
+            <p className="offload-group"> Total : </p>
+            <p className="offload-group">{normalizeWeight( landings.reduce((a,b)=>(b.totalWeight + a),0))}</p>
+          </div>
+          </a>
   </div>
 );
 

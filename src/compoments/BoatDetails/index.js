@@ -8,6 +8,7 @@ import boaticon from './boat.png';
 import selectionsContext from '../../Context/selectionsContext';
 import LandingsOverView from '../LandingsOverView';
 import DatePicker from 'react-datepicker';
+import {BrowserView,MobileView} from "react-device-detect";
 
 class BoatDetails extends React.Component {
   static contextType = selectionsContext;
@@ -240,14 +241,54 @@ class BoatDetails extends React.Component {
           )
           : <></>}
 
+            <LandingsOverView
+            data={landings}
+            graphTitle={"Siste landings"}
+            graphHeight={ 450 } 
+            graphWidth={ 750 }/>
+        <div className="controls-container-date">
+           <DatePicker
+                selected={fromDate}
+                onChange={(date) => {
+                  const {  toDate } = this.state;
+                  this.setState({fromDate: date});
+                  this.updateOffloadList( date, toDate );
+                }}
+                dateFormat="MM/yyyy"
+                minDate={new Date( 2020, 0 )}
+                maxDate={new Date()}
+                showMonthYearPicker
+                showYearArrows
+                showFullMonthYearPicker
+              />
+            <DatePicker
+                selected={toDate}
+                onChange={(date) => {
+                  const { fromDate } = this.state;
+                  this.setState({toDate: date});
+                  this.updateOffloadList(fromDate, date);
+                }}
+                dateFormat="MM/yyyy"
+                minDate={new Date( 2020, 0 )}
+                maxDate={new Date()}
+                showMonthYearPicker
+                showYearArrows
+                showFullMonthYearPicker
+              />
+          </div>
+
         <LandingsTable
           landings={landings}
           registrationId={registrationId}
           landingNo={(pageNo - 1) * resultCount}
           boatOffloadLoaded={boatOffloadLoaded}
           boatOffloadError={boatOffloadError}
-        />{false
-          ? <LandingsTableControlls
+        />
+        
+        
+        
+        {false // Depricated code 
+          ?<LandingsTableControlls
                 nextPage={() => {
                   let page = pageNo;
                   page += 1;
@@ -272,43 +313,8 @@ class BoatDetails extends React.Component {
                 page={pageNo}
                 defaultPageSize={resultCount}
               />
-          :<div className="controls-container-date">
-           <DatePicker
-                selected={fromDate}
-                onChange={(date) => {
-                  const {  toDate } = this.state;
-                  this.setState({fromDate: date});
-                  this.updateOffloadList( date, toDate );
-                }}
-                dateFormat="MM/yyyy"
-                minDate={new Date( 2020, 0 )}
-                maxDate={new Date()}
-                showMonthYearPicker
-                showYearArrows
-                showFullMonthYearPicker
-              />
-            <DatePicker
-                selected={toDate}
-                onChange={(date) => {
-                  const { fromDate } = this.state;
-                  this.setState({toDate: date});
-
-                  this.updateOffloadList(fromDate, date);
-                }}
-                dateFormat="MM/yyyy"
-                minDate={new Date( 2020, 0 )}
-                maxDate={new Date()}
-                showMonthYearPicker
-                showYearArrows
-                showFullMonthYearPicker
-              />
-          </div>
-
+          :<></>
         }
-
-        <LandingsOverView
-          data={landings}
-        />
       </div>
     );
   }

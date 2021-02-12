@@ -6,10 +6,9 @@ import { Bar } from 'react-chartjs-2';
 import { GenerateGraphData } from '../../services/graphService';
 
 
-const LandingsOverView = (({data, type, graphHeight, graphWidth, mixCutoffPoint, mixCutoffName})=> {
+const LandingsOverView = (({data, type, graphTitle, graphHeight, graphWidth, mixCutoffPoint, mixCutoffName})=> {
     
-    const [barDataset,setBarData] = useState(
-    )
+    const [barDataset,setBarData] = useState();
 
     useEffect(()=>{
 
@@ -17,7 +16,9 @@ const LandingsOverView = (({data, type, graphHeight, graphWidth, mixCutoffPoint,
 
       if (type === 'simple'){
         graphData.reduceData(mixCutoffPoint, mixCutoffName);
-        setBarData(graphData.generateBarData());
+        setBarData(
+          data=graphData.generateBarData()
+        );
       } 
       else if ( type === 'by-month') {
 
@@ -37,15 +38,20 @@ const LandingsOverView = (({data, type, graphHeight, graphWidth, mixCutoffPoint,
         setBarData(graphData.generateBarData());
 
       }
-
     },[data]);
-
+    useEffect(()=>{
+    });
     return(<><Bar
                 data={barDataset}                      
                 redraw
                 width={graphWidth}
                 height={graphHeight}
                 options={{
+                    title:{
+                      display:true,
+                      text:graphTitle,
+                      fontSize:30,
+                    },
                     scales: {
                         xAxes: [{
                             stacked: true
@@ -73,6 +79,7 @@ LandingsOverView.propTypes = {
       graphWidth: number,
       mixCutoffPoint: number, 
       mixCutoffName: string,
+      graphTitle: string
 };
 
 LandingsOverView.defaultProps = {
@@ -80,7 +87,8 @@ LandingsOverView.defaultProps = {
   graphHeight: 400,
   graphWidth: 800,
   mixCutoffPoint: 0.05,
-  mixCutoffName: 'resten'
+  mixCutoffName: 'resten',
+  graphTitle: ''
 }
 
 export default LandingsOverView;
