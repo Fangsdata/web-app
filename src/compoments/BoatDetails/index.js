@@ -58,11 +58,11 @@ class BoatDetails extends React.Component {
       resultCount: boatOffloadPageCount,
     });
 
-    fetch(`http://fangsdata-api.herokuapp.com/api/Boats/registration/${boatname}`)
+    fetch(`http://109.74.201.221:5000/api/Boats/registration/${boatname}`)
       .then((res) => res.json())
       .then((res) => {
         if(boatRadio === "" ){
-          fetch(`https://fangsdata-api.herokuapp.com/api/maps/boats/radio/${res.radioSignalId}`)
+          fetch(`http://109.74.201.221:5000/api/maps/boats/radio/${res.radioSignalId}`)
               .then(res => res.json())
               .then(res => {
                 if( res[0]['latitude'] !== undefined || res[0]['longitude'] !== undefined )
@@ -77,7 +77,7 @@ class BoatDetails extends React.Component {
     this.updateOffloadList(fromDate, toDate);
 
     if(boatRadio !== ""){
-      fetch(`https://fangsdata-api.herokuapp.com/api/maps/boats/radio/${boatRadio}`)
+      fetch(`http://109.74.201.221:5000/api/maps/boats/radio/${boatRadio}`)
         .then(res => res.json())
         .then(res => this.setState({mapData: res}))
         .catch(()=>{})
@@ -93,11 +93,11 @@ class BoatDetails extends React.Component {
     }
     if (boatname !== prevProps.boatname) {
       this.setState({ boatOffloadLoaded: false, boatDetailError: false, boatOffloadError: false });
-      fetch(`http://fangsdata-api.herokuapp.com/api/Boats/registration/${boatname}`)
+      fetch(`http://109.74.201.221:5000/api/Boats/registration/${boatname}`)
       .then((res) => res.json())
       .then((res) => {
         if(boatRadio === "" ){
-          fetch(`https://fangsdata-api.herokuapp.com/api/maps/boats/radio/${res.radioSignalId}`)
+          fetch(`http://109.74.201.221:5000/api/maps/boats/radio/${res.radioSignalId}`)
               .then(res => res.json())
               .then(res => {
                 if( res[0]['latitude'] === undefined && res[0]['longitude'] === undefined )
@@ -118,7 +118,7 @@ class BoatDetails extends React.Component {
     const { boatname } = this.props;
     this.setState({ boatOffloadLoaded: false, boatDetailError: false, boatOffloadError: false });
     this.setState({ landings: [] });
-    fetch(`https://fangsdata-api.herokuapp.com/api/offloads/${boatname}/date/${normalizeDateForWeb(fromDate)}/${normalizeDateForWeb(toDate)}`)
+    fetch(`http://109.74.201.221:5000/api/offloads/${boatname}/date/${normalizeDateForWeb(fromDate)}/${normalizeDateForWeb(toDate)}`)
     .then((res2) => res2.json())
     .then((res2) => {
       this.setState({ landings: res2, boatOffloadLoaded: true });

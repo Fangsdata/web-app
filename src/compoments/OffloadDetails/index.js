@@ -147,7 +147,7 @@ const OffloadDetails = ({ date, registrationId }) => {
       setPieSize(window.innerWidth * 0.9);
     }
     setOffloadLoad(false);
-    fetch(`https://fangsdata-api.herokuapp.com/api/offloads/details/date/${date}/${registrationId}`)
+    fetch(`http://109.74.201.221:5000/api/offloads/details/date/${date}/${registrationId}`)
       .then((res) => res.json())
       .then((json) => {
         setOffloadDetails(json);

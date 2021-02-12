@@ -8,7 +8,7 @@ import FilterCheckBox from '../FilterCheckBox';
 import LoadingAnimation from '../LoadingAnimation';
 import { el } from 'date-fns/locale';
 
-// https://fangsdata-api.herokuapp.com/api/offloads?fishingGear=Garn&Count=5
+// http://109.74.201.221:5000/api/offloads?fishingGear=Garn&Count=5
 
 class FrontPage extends React.Component {
   static contextType = selectMonthContext;
