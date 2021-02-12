@@ -8,7 +8,6 @@ import boaticon from './boat.png';
 import selectionsContext from '../../Context/selectionsContext';
 import LandingsOverView from '../LandingsOverView';
 import DatePicker from 'react-datepicker';
-import {BrowserView,MobileView} from "react-device-detect";
 
 class BoatDetails extends React.Component {
   static contextType = selectionsContext;
