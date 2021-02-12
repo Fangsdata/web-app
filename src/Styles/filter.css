@@ -137,7 +137,7 @@
 }
 
 .react-datepicker__month--selected, .react-datepicker__month--in-selecting-range, .react-datepicker__month--in-range, .react-datepicker__quarter--selected, .react-datepicker__quarter--in-selecting-range, .react-datepicker__quarter--in-range {
-    background-color: rgb(71, 110, 202) !important;   
+    background-color: rgb(71, 110, 202) !important;
 
 }
 
@@ -183,7 +183,26 @@
     margin-right: 2rem;
 }
 
+
+@media only screen and (max-width: 900px) {
+    .react-datepicker-wrapper input{
+        -webkit-appearance: none;
+    }
+
+    .dropdowns-container {
+        flex-direction: column;
+    }
+
+    .filter-dropdown {
+        margin-top: 1rem;
+    }
+}
+
 @media only screen and (max-width: 700px) {
+    .react-datepicker-wrapper input{
+        width: 80%;
+    }
+
     .dropdowns-container {
         flex-direction: column;
     }

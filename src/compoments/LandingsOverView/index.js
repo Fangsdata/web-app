@@ -3,7 +3,6 @@ import PropTypes, {
     string, arrayOf, shape,  number,
   } from 'prop-types';
 import { Bar } from 'react-chartjs-2';
-import { normalizeDate } from '../../services/TextTools';
 import { GenerateGraphData } from '../../services/graphService';
 
 

@@ -272,28 +272,34 @@ class BoatDetails extends React.Component {
                 page={pageNo}
                 defaultPageSize={resultCount}
               />
-          :<div className="controls-container">
+          :<div className="controls-container-date">
            <DatePicker
                 selected={fromDate}
-                dateFormat="MM/yyyy"
                 onChange={(date) => {
                   const {  toDate } = this.state;
                   this.setState({fromDate: date});
                   this.updateOffloadList( date, toDate );
                 }}
+                dateFormat="MM/yyyy"
+                minDate={new Date( 2020, 0 )}
+                maxDate={new Date()}
                 showMonthYearPicker
+                showYearArrows
                 showFullMonthYearPicker
               />
             <DatePicker
                 selected={toDate}
-                dateFormat="MM/yyyy"
                 onChange={(date) => {
                   const { fromDate } = this.state;
                   this.setState({toDate: date});
 
                   this.updateOffloadList(fromDate, date);
                 }}
+                dateFormat="MM/yyyy"
+                minDate={new Date( 2020, 0 )}
+                maxDate={new Date()}
                 showMonthYearPicker
+                showYearArrows
                 showFullMonthYearPicker
               />
           </div>

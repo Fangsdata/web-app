@@ -113,6 +113,14 @@
     width: 20rem;
     margin-bottom: 2rem;
 }
+.controls-container-date {
+    display: flex;
+    margin: auto;
+    width: 20rem;
+    margin-bottom: 2rem;
+    align-items: center; 
+}
+
 
 .controls-container p {
     margin: 0;
