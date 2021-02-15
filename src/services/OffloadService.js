@@ -38,21 +38,43 @@ const getBoats = async (radioSignal = '') => {
   return json;
 };
 
+const getBoatByRegistration = async (registratinId) => {
+  const resp = await fetch(`${OFFLOADAPI}/boats/registration/${registratinId}`);
+  const json = await resp.json();
+  return json;
+}
+
+const getBoatLocation = async ( radioSignal ) => {
+  const resp = await fetch(`${OFFLOADAPI}/maps/boats/radio/${radioSignal}`);
+  const json = await resp.json();
+  return json; 
+}
+
 const getValue = async (key = '') => {
   const resp = await fetch(`${OFFLOADAPI}/key/${key}`);
   const json = await resp.text();
   return json;
 }
 
-const getOffloadsTest = async () => {
-  const resp = await fetch(`${OFFLOADAPI}/offloads?fishingGear=Garn&Count=5`);
+const getBoatOffladsTimeframe = async (boatRegId, from, to) => {
+  const resp = await fetch(`${OFFLOADAPI}/offloads/${boatRegId}/date/${from}/${to}`);
   const json = await resp.json();
+  console.log(json)
   return json;
-};
+}
+
+const getOffloadDetails = async ( date, registrationId ) => {
+  const resp = await fetch(`${OFFLOADAPI}/offloads/details/date/${date}/${registrationId}`);
+  const json = await resp.json();
+  return json; 
+}
 
 export {
   getOffloads,
   getBoats,
-  getOffloadsTest,
-  getValue
+  getBoatByRegistration,
+  getBoatOffladsTimeframe,
+  getBoatLocation,
+  getValue,
+  getOffloadDetails,
 };

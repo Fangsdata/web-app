@@ -3,12 +3,9 @@ import selectMonthContext from '../../Context/selectionsContext';
 import { Link } from 'react-router-dom';
 import { getOffloads,getValue } from '../../services/OffloadService';
 import OffloadsList from '../OffloadsList';
-import { normalizeMonth,norweganQueryParam } from '../../services/TextTools';
+import { norweganQueryParam } from '../../services/TextTools';
 import FilterCheckBox from '../FilterCheckBox';
 import LoadingAnimation from '../LoadingAnimation';
-import { el } from 'date-fns/locale';
-
-// http://109.74.201.221:5000/api/offloads?fishingGear=Garn&Count=5
 
 class FrontPage extends React.Component {
   static contextType = selectMonthContext;

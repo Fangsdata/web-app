@@ -3,7 +3,17 @@ import { string } from 'prop-types';
 import VesselMap from '../Map';
 import LandingsTable from '../LandingsTable';
 import LandingsTableControlls from '../LandingsTableControlls';
-import { normalizeCase, normalizeLength, normalizeWeight,normalizeDateForWeb } from '../../services/TextTools';
+import { 
+  normalizeCase,
+  normalizeLength,
+  normalizeWeight,
+  normalizeDateForWeb 
+} from '../../services/TextTools';
+import {
+  getBoatByRegistration,
+  getBoatLocation,
+  getBoatOffladsTimeframe,
+} from '../../services/OffloadService';
 import boaticon from './boat.png';
 import selectionsContext from '../../Context/selectionsContext';
 import LandingsOverView from '../LandingsOverView';
@@ -49,7 +59,7 @@ class BoatDetails extends React.Component {
   }
 
   async componentDidMount() {
-    const { boatname, boatRadio } = this.props;
+    const { boatname } = this.props;
     const { pageNo, resultCount, fromDate, toDate } = this.state;
     const { boatOffloadPageCount,boatOffloadPageNo } = this.context;
 
@@ -57,72 +67,48 @@ class BoatDetails extends React.Component {
       pageNo: boatOffloadPageNo,
       resultCount: boatOffloadPageCount,
     });
-
-    fetch(`http://109.74.201.221:5000/api/Boats/registration/${boatname}`)
-      .then((res) => res.json())
-      .then((res) => {
-        if(boatRadio === "" ){
-          fetch(`http://109.74.201.221:5000/api/maps/boats/radio/${res.radioSignalId}`)
-              .then(res => res.json())
-              .then(res => {
-                if( res[0]['latitude'] !== undefined || res[0]['longitude'] !== undefined )
-                this.setState({mapData: res})
-              })
-              .catch(()=>{}) 
-          this.setState({ boat: res, boatDetailLoaded: true });
-        }
-
-      })
-      .catch(() => this.setState({ boatDetailError: true }));
+    this.getBoatDetails(boatname);
     this.updateOffloadList(fromDate, toDate);
-
-    if(boatRadio !== ""){
-      fetch(`http://109.74.201.221:5000/api/maps/boats/radio/${boatRadio}`)
-        .then(res => res.json())
-        .then(res => this.setState({mapData: res}))
-        .catch(()=>{})
-      }
     }
 
 
   async componentDidUpdate(prevProps, prevState) {
     const { pageNo, resultCount, fromDate, toDate } = this.state;
-    const { boatname,boatRadio } = this.props;
+    const { boatname } = this.props;
     if (pageNo !== prevState.pageNo || resultCount !== prevState.resultCount) {
       this.updateOffloadList(fromDate, toDate);
     }
     if (boatname !== prevProps.boatname) {
-      this.setState({ boatOffloadLoaded: false, boatDetailError: false, boatOffloadError: false });
-      fetch(`http://109.74.201.221:5000/api/Boats/registration/${boatname}`)
-      .then((res) => res.json())
-      .then((res) => {
-        if(boatRadio === "" ){
-          fetch(`http://109.74.201.221:5000/api/maps/boats/radio/${res.radioSignalId}`)
-              .then(res => res.json())
-              .then(res => {
-                if( res[0]['latitude'] === undefined && res[0]['longitude'] === undefined )
-                this.setState({mapData: res})
-              })
-              .catch(()=>{}) 
-          this.setState({ boat: res, boatDetailLoaded: true });
-        }
-      })
-      .catch(() => this.setState({ boatDetailError: true }));
-
-
+      this.getBoatDetails(boatname);
       this.updateOffloadList(fromDate, toDate);
     }
+  }
+
+  getBoatDetails(boatname){
+    this.setState({ boatOffloadLoaded: false, boatDetailError: false, boatOffloadError: false, mapData: [] });
+    getBoatByRegistration(boatname)
+    .then((boat)=>{
+      this.setState({boat: boat, boatDetailLoaded: true});
+        getBoatLocation(boat.radioSignalId)
+          .then(map => {
+            if( map !== [] ||
+                map[0]['latitude'] !== undefined ||
+                map[0]['longitude'] !== undefined ){
+              this.setState({mapData: map}); 
+            }
+          })
+    })
+    .catch(() => this.setState({ boatDetailError: true }));;
+
   }
 
   updateOffloadList(fromDate, toDate){
     const { boatname } = this.props;
     this.setState({ boatOffloadLoaded: false, boatDetailError: false, boatOffloadError: false });
     this.setState({ landings: [] });
-    fetch(`http://109.74.201.221:5000/api/offloads/${boatname}/date/${normalizeDateForWeb(fromDate)}/${normalizeDateForWeb(toDate)}`)
-    .then((res2) => res2.json())
-    .then((res2) => {
-      this.setState({ landings: res2, boatOffloadLoaded: true });
-    });
+
+    getBoatOffladsTimeframe(  boatname, normalizeDateForWeb(fromDate), normalizeDateForWeb(toDate))
+      .then(landings => { this.setState({ landings: landings, boatOffloadLoaded: true })});
   }
 
   render() {
@@ -322,11 +308,9 @@ class BoatDetails extends React.Component {
 
 BoatDetails.propTypes = {
   boatname: string.isRequired,
-  boatRadio: string.isRequired
 };
 
 BoatDetails.defaultProps = {
-  boatRadio: ""
 }
 
 export default BoatDetails;

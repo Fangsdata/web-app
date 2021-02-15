@@ -9,6 +9,7 @@ import filterImg from './filter_list-24px.svg';
 import UpArrowImg from './arrow_drop_up-24px.svg';
 import DownArrowImg from './arrow_drop_down-24px.svg';
 import { generateColors } from '../../services/graphService';
+import { getOffloadDetails } from '../../services/OffloadService';
 
 const OffloadDetails = ({ date, registrationId }) => {
   const [chartData, setChartData] = useState(
@@ -147,16 +148,15 @@ const OffloadDetails = ({ date, registrationId }) => {
       setPieSize(window.innerWidth * 0.9);
     }
     setOffloadLoad(false);
-    fetch(`http://109.74.201.221:5000/api/offloads/details/date/${date}/${registrationId}`)
-      .then((res) => res.json())
-      .then((json) => {
-        setOffloadDetails(json);
-        UpdateData(json.fish);
-        setOffloadLoad(true);
-      })
-      .catch(() => {
-        setOffloadError(true);
-      });
+    getOffloadDetails(date,registrationId)
+    .then((details)=>{
+      setOffloadDetails(details);
+      UpdateData(details.fish);
+      setOffloadLoad(true); 
+    })
+    .catch(() => {
+      setOffloadError(true);
+    });
       // eslint-disable-next-line 
   }, [date,registrationId]);
 
