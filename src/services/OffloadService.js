@@ -58,8 +58,10 @@ const getValue = async (key = '') => {
 
 const getBoatOffladsTimeframe = async (boatRegId, from, to) => {
   const resp = await fetch(`${OFFLOADAPI}/offloads/${boatRegId}/date/${from}/${to}`);
+  if (resp.status == '404'){
+    return [];
+  }
   const json = await resp.json();
-  console.log(json)
   return json;
 }
 

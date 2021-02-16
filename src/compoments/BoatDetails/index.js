@@ -54,7 +54,8 @@ class BoatDetails extends React.Component {
       boatDetailError: false,
       boatOffloadError: false,
       fromDate: new Date(today.getFullYear(),0), 
-      toDate: today
+      toDate: today,
+      today: today
     };
   }
 
@@ -106,9 +107,12 @@ class BoatDetails extends React.Component {
     const { boatname } = this.props;
     this.setState({ boatOffloadLoaded: false, boatDetailError: false, boatOffloadError: false });
     this.setState({ landings: [] });
+    console.log(fromDate);
+    console.log(toDate);
 
     getBoatOffladsTimeframe(  boatname, normalizeDateForWeb(fromDate), normalizeDateForWeb(toDate))
-      .then(landings => { this.setState({ landings: landings, boatOffloadLoaded: true })});
+      .then(landings => {
+        this.setState({ landings: landings, boatOffloadLoaded: true })});
   }
 
   render() {
@@ -124,6 +128,7 @@ class BoatDetails extends React.Component {
       mapData,
       fromDate,
       toDate,
+      today
     } = this.state;
 
     const {
@@ -241,7 +246,7 @@ class BoatDetails extends React.Component {
                 }}
                 dateFormat="MM/yyyy"
                 minDate={new Date( 2020, 0 )}
-                maxDate={new Date()}
+                maxDate={today}
                 showMonthYearPicker
                 showYearArrows
                 showFullMonthYearPicker
@@ -250,12 +255,15 @@ class BoatDetails extends React.Component {
                 selected={toDate}
                 onChange={(date) => {
                   const { fromDate } = this.state;
+                  date.setDate(0);
+                  date.setMonth(date.getMonth() + 1 );
+
                   this.setState({toDate: date});
                   this.updateOffloadList(fromDate, date);
                 }}
                 dateFormat="MM/yyyy"
                 minDate={new Date( 2020, 0 )}
-                maxDate={new Date()}
+                maxDate={ new Date(today.getFullYear(), today.getMonth()+1)}
                 showMonthYearPicker
                 showYearArrows
                 showFullMonthYearPicker
