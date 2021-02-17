@@ -44,6 +44,13 @@ const getBoatByRegistration = async (registratinId) => {
   return json;
 }
 
+const getBoatById = async (id) => {
+  const resp = await fetch(`${OFFLOADAPI}/boats/id/${id}`);
+  const json = await resp.json();
+  return json;
+}
+
+
 const getBoatLocation = async ( radioSignal ) => {
   const resp = await fetch(`${OFFLOADAPI}/maps/boats/radio/${radioSignal}`);
   const json = await resp.json();
@@ -79,4 +86,5 @@ export {
   getBoatLocation,
   getValue,
   getOffloadDetails,
+  getBoatById
 };

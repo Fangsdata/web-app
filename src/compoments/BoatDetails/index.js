@@ -10,7 +10,7 @@ import {
   normalizeDateForWeb 
 } from '../../services/TextTools';
 import {
-  getBoatByRegistration,
+  getBoatById,
   getBoatLocation,
   getBoatOffladsTimeframe,
 } from '../../services/OffloadService';
@@ -87,7 +87,7 @@ class BoatDetails extends React.Component {
 
   getBoatDetails(boatname){
     this.setState({ boatOffloadLoaded: false, boatDetailError: false, boatOffloadError: false, mapData: [] });
-    getBoatByRegistration(boatname)
+    getBoatById(boatname)
     .then((boat)=>{
       this.setState({boat: boat, boatDetailLoaded: true});
         getBoatLocation(boat.radioSignalId)

@@ -79,7 +79,7 @@ const SearchBar = () => {
               { foundBoats.map((boat) => (
                 <QuickSearchItem
                   searchItemTitle={`${boat.name} - ${boat.registration_id}`}
-                  RegistrationId={boat.registration_id}
+                  id={boat.id}
                   ClickedEvent={() => {
                     updateSearch('');
                     setFoundBoats([]);
@@ -94,8 +94,8 @@ const SearchBar = () => {
     </div>
   );
 };
-const QuickSearchItem = ({ searchItemTitle, RegistrationId, ClickedEvent }) => (
-  <Link to={`/boats/${RegistrationId}`} onClick={() => { ClickedEvent(RegistrationId); }}>
+const QuickSearchItem = ({ searchItemTitle, id, ClickedEvent }) => (
+  <Link to={`/boats/${id}`} onClick={() => { ClickedEvent(id); }}>
     <div className="search-result">
       {searchItemTitle}
     </div>

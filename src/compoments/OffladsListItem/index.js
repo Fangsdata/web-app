@@ -4,7 +4,7 @@ import PropTypes, { number } from 'prop-types';
 import { normalizeWeight, normalizeLength, shortinString } from '../../services/TextTools';
 
 const OffloadListItem = ({ item, index }) => (
-  <Link className="offload-link" to={`/boats/${item.boatRegistrationId}`}>
+  <Link className="offload-link" to={`/boats/${item.id}`}>
     <div className="offload-row">
       <p className="offload-index">{index}</p>
       <p className="offload-name">

@@ -18,7 +18,7 @@ const OffladsList = ({ offloads, title,pageNo, updatedOn }) => (
 
     { offloads.map((item, index) => (
       <OffladsListItem
-        key={item.boatRegistrationId}
+        key={item.id}
         item={item}
         index={(index + 1) + (pageNo *  offloads.length) - offloads.length}
       />
