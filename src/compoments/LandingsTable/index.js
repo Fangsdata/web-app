@@ -6,7 +6,7 @@ import PropTypes, {
 import { normalizeWeight, normalizeDate, normalizeCase } from '../../services/TextTools';
 
 const LandingsTable = ({
-  landings,registrationId, landingNo, boatOffloadLoaded, boatOffloadError,
+  landings,boatId, landingNo, boatOffloadLoaded, boatOffloadError,
 }) => (
   <div className="offload-table landing-table">
     <div className="offload-header">Siste lendinger</div>
@@ -22,7 +22,7 @@ const LandingsTable = ({
         <>
           { boatOffloadLoaded
             ? landings.map((landing, i) => (
-              <Link to={`/offloads/${landing.landingDate}/${registrationId} `}>
+              <Link to={`/offloads/${landing.landingDate}/${boatId} `}>
                 <div className="offload-row">
                   <p className="offload-index">
                     {i + 1 + landingNo}
@@ -64,7 +64,7 @@ LandingsTable.propTypes = {
     state: string.isRequired,
     totalWeight: number.isRequired,
   }).isRequired).isRequired,
-  registrationId: string.isRequired,
+  boatId: string.isRequired,
   landingNo: number,
   boatOffloadLoaded: bool,
   boatOffloadError: bool,
