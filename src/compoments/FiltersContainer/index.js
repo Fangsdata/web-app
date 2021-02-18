@@ -203,7 +203,7 @@ const FiltersContainer = ({ inputEvent, allFilters, updateDate }) => {
                           selected={selectedDate}
                           onChange={(date) => {
                             setSelectedDate(date);
-                            updateDate(date,true);
+                            updateDate(date,false);
                           }}
                           dateFormat="MM/yyyy"
                           showMonthYearPicker
@@ -213,7 +213,7 @@ const FiltersContainer = ({ inputEvent, allFilters, updateDate }) => {
                         selected={selectedDate}
                         onChange={(date) => {
                           setSelectedDate(date);
-                          updateDate(date,false);
+                          updateDate(date,true);
                         }}
                         dateFormat="yyyy"
                         showYearPicker
