@@ -32,7 +32,7 @@ class TopOffLoads extends React.Component {
         fishingGear:        paramsFromQuery['redskap'] || [],
         boatLength:         paramsFromQuery['lengde'] || [],
         fishName:           paramsFromQuery['fisketype'] || [],
-        preservationMethod: paramsFromQuery['Konserveringsmate'] || [],
+        preservationMethod: paramsFromQuery['konserveringsmate'] || [],
         month:              paramsFromQuery['maned'] || [month,month],
         year:               paramsFromQuery['ar'] || [],
         landingState:       paramsFromQuery['fylke'] || [],
@@ -121,7 +121,7 @@ class TopOffLoads extends React.Component {
     filter['pageNo'] = [topLandingsPageNo];
 
     this.setState(filter);
-
+    console.log(filter);
     Promise.all([
       getOffloads(filter),
       getValue('last_updated')
