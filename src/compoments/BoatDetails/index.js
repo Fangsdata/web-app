@@ -246,7 +246,7 @@ class BoatDetails extends React.Component {
                   this.updateOffloadList( date, toDate );
                 }}
                 dateFormat="MM/yyyy"
-                minDate={new Date( 2020, 0 )}
+                minDate={new Date( 2000, 0 )}
                 maxDate={today}
                 showMonthYearPicker
                 showYearArrows
@@ -263,7 +263,7 @@ class BoatDetails extends React.Component {
                   this.updateOffloadList(fromDate, date);
                 }}
                 dateFormat="MM/yyyy"
-                minDate={new Date( 2020, 0 )}
+                minDate={new Date( 2000, 0 )}
                 maxDate={ new Date(today.getFullYear(), today.getMonth()+1)}
                 showMonthYearPicker
                 showYearArrows
