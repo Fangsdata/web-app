@@ -20,7 +20,6 @@ const About = () => (
           Vi får dataene våre fra <a href='https://www.fiskeridir.no'>fiskeridir.no</a> som har en åpen database,
           ikke alle vet det hvordan du får tilgang til denne informasjonen, 
           og det kan være vanskelig å tyde.
-.
           </p>
           <p>
             Vi ønsker å gi enkel tilgang til denne informasjonen
