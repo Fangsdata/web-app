@@ -78,6 +78,12 @@ const getOffloadDetails = async ( date, registrationId ) => {
   return json; 
 }
 
+const getBoatNameHistory = async ( boatId ) => {
+  const resp = await fetch(`${OFFLOADAPI}/boats/namehistory/${boatId}`);
+  const json = await resp.json();
+  return json;  
+}
+
 export {
   getOffloads,
   getBoats,
@@ -86,5 +92,6 @@ export {
   getBoatLocation,
   getValue,
   getOffloadDetails,
-  getBoatById
+  getBoatById,
+  getBoatNameHistory
 };

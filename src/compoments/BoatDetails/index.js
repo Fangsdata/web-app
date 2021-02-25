@@ -7,11 +7,13 @@ import {
   normalizeCase,
   normalizeLength,
   normalizeWeight,
-  normalizeDateForWeb 
+  normalizeDateForWeb, 
+  normalizeDate
 } from '../../services/TextTools';
 import {
   getBoatById,
   getBoatLocation,
+  getBoatNameHistory,
   getBoatOffladsTimeframe,
 } from '../../services/OffloadService';
 import boaticon from './boat.png';
@@ -55,7 +57,8 @@ class BoatDetails extends React.Component {
       boatOffloadError: false,
       fromDate: new Date(today.getFullYear(),0), 
       toDate: today,
-      today: today
+      today: today,
+      nameHistory: []
     };
   }
 
@@ -99,7 +102,11 @@ class BoatDetails extends React.Component {
             }
           })
     })
-    .catch(() => this.setState({ boatDetailError: true }));;
+    .catch(() => this.setState({ boatDetailError: true }));
+    getBoatNameHistory(boatname)
+    .then((names)=>{
+      this.setState({nameHistory : names});
+    })
 
   }
 
@@ -128,9 +135,10 @@ class BoatDetails extends React.Component {
       mapData,
       fromDate,
       toDate,
-      today
+      today,
+      nameHistory
     } = this.state;
-
+    console.log(nameHistory)
     const {
       name,
       state,
@@ -200,12 +208,16 @@ class BoatDetails extends React.Component {
                           <p className="boat-details">
                             Breddegrad / Lengdegrad:
                             <br />
-                            {`${mapData[0].latitude} / ${mapData[0].longitude}`}
+                            {`${mapData[0].latitude} ° / ${mapData[0].longitude} °`}
                           </p>
                         )
                         : <></>}
                       <br />
-
+                      { nameHistory[1] !== undefined
+                      ? <><p className="boat-details">Eldre navn: </p>
+                      {nameHistory.map(({boatName,boatNameChangedDate})=>(<p className="boat-details" >{normalizeDate(boatNameChangedDate)} - {normalizeCase(boatName)}</p>))}</>
+                      :<></>
+                      }
                     </div>
                   </>
                 )

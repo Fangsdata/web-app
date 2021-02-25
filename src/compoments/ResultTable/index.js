@@ -35,8 +35,8 @@ const ResultTable = (({title,headers, footer, items })=>{
 
             
         </>
-        :<div className="offload-row">
-            <p className="offload-group">ingen resultater</p>
+        :<div className="offload-row" style={{alignContent:'center', justifyContent:'center'}}>
+            <p className="offload-group">Ingen resultater...</p>
          </div>
     }
   </div>)
