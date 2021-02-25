@@ -22,7 +22,7 @@ const LandingsTable = ({
         <>
           { boatOffloadLoaded
             ? landings.map((landing, i) => (
-              <Link to={`/offloads/${landing.landingDate}/${boatId} `}>
+              <Link to={`/offload/${landing.landingDate}/${boatId} `}>
                 <div className="offload-row">
                   <p className="offload-index">
                     {i + 1 + landingNo}
@@ -46,7 +46,7 @@ const LandingsTable = ({
       : <p>there was an error here</p>}
         <a>
         <div className="offload-row">
-            <p className="offload-index"></p>
+            <p className="offload-index"> <Link to= {`/offloads/${boatId}`} ><div style={{marginTop:'0px', marginLeft:'1rem'}} className="more-btn">ser mer</div></Link> </p>
             <p className="offload-name"></p>
             <p className="offload-group"></p>
             <p className="offload-group"> Total : </p>

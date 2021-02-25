@@ -4,6 +4,7 @@ import NavigationBar from './compoments/NavigationBar';
 import TopOffloads from './compoments/TopOffLoads';
 import Container from './compoments/Container';
 import BoatDetails from './compoments/BoatDetails';
+import OffloadBoatDetails from './compoments/OffloadBoatDetails';
 import Contact from './compoments/Contact';
 import About from './compoments/About';
 import Search from './compoments/Search';
@@ -64,7 +65,8 @@ function App() {
                 <Route exact path="/about" component={About} />
                 <Route exact path="/Search/:term" render={(e) => <Search term={e.match.params.term} />}  />
                 <Route exact path="/boats/:boatname" render={(e) => <BoatDetails boatname={e.match.params.boatname} />} />
-                <Route exact path="/offloads/:date/:registrationId" render={(e) => <OffloadDetails date={e.match.params.date} registrationId={e.match.params.registrationId}/>} />
+                <Route exact path="/offloads/:boatId" render={(e) => <OffloadBoatDetails boatId={e.match.params.boatId}/>} />
+                <Route exact path="/offload/:date/:registrationId" render={(e) => <OffloadDetails date={e.match.params.date} registrationId={e.match.params.registrationId}/>} />
                 <Route path="/*" component={NotFound} />
             </Switch>
             </selectionsContext.Provider>

@@ -235,7 +235,7 @@ class BoatDetails extends React.Component {
             <LandingsOverView
             data={landings}
             graphTitle={"Siste landings"}
-            graphHeight={ 450 } 
+            graphHeight={ 350 } 
             graphWidth={ 750 }/>
         <div className="controls-container-date">
            <DatePicker
@@ -278,7 +278,7 @@ class BoatDetails extends React.Component {
           boatOffloadLoaded={boatOffloadLoaded}
           boatOffloadError={boatOffloadError}
         />
-        
+      
         
         
         {false // Depricated code 
