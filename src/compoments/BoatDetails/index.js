@@ -114,12 +114,21 @@ class BoatDetails extends React.Component {
     const { boatname } = this.props;
     this.setState({ boatOffloadLoaded: false, boatDetailError: false, boatOffloadError: false });
     this.setState({ landings: [] });
-    console.log(fromDate);
-    console.log(toDate);
+    console.log("from",fromDate);
+    console.log("TO",toDate);
+    console.log("bn",boatname);
 
     getBoatOffladsTimeframe(  boatname, normalizeDateForWeb(fromDate), normalizeDateForWeb(toDate))
       .then(landings => {
-        this.setState({ landings: landings, boatOffloadLoaded: true })});
+        console.log("landin",landings)
+        if(landings === null){
+          this.setState({ landings: [], boatOffloadLoaded: true })
+        }
+        else{
+          this.setState({ landings: landings, boatOffloadLoaded: true })
+        }
+
+      });
   }
 
   render() {
@@ -138,7 +147,7 @@ class BoatDetails extends React.Component {
       today,
       nameHistory
     } = this.state;
-    console.log(nameHistory)
+    console.log(boat)
     const {
       name,
       state,

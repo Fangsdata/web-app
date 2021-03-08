@@ -1,14 +1,15 @@
+import { el } from 'date-fns/locale';
 import { OFFLOADAPI } from '../Constants';
 
-async function getDataFromApi(filter) {
-  let url = `${OFFLOADAPI}/offloads?`;
+async function sendQuery(inUrl, queryParam) {
+  let url = inUrl + '?';
   let params = '';
-  Object.getOwnPropertyNames(filter).forEach(
+  Object.getOwnPropertyNames(queryParam).forEach(
     (prop) => {
-      if (typeof (filter[prop] === 'object')) {
-        if (filter[prop].length !== 0) {
+      if (typeof (queryParam[prop] === 'object')) {
+        if (queryParam[prop].length !== 0) {
           params += `${prop}=`;
-          filter[prop].forEach((p) => {
+          queryParam[prop].forEach((p) => {
             params += `${p},`;
           });
           params = params.substring(0, params.length - 1);
@@ -26,12 +27,22 @@ async function getDataFromApi(filter) {
 }
 
 const getOffloads = async (filter = {}) => {
-  const data = await getDataFromApi(filter);
+  const data = await sendQuery(`${OFFLOADAPI}/offloads`, filter);
   if (data.status !== 400) {
     return data;
   }
   return [];
 };
+
+const getOwners = async (filter = {}) => {
+  const data = await sendQuery(`${OFFLOADAPI}/owners` ,filter);
+  if (data.status !== 400) {
+    return data;
+  }
+  return [];
+};
+
+
 const getBoats = async (radioSignal = '') => {
   const resp = await fetch(`${OFFLOADAPI}/boats/${radioSignal}`);
   const json = await resp.json();
@@ -64,7 +75,8 @@ const getValue = async (key = '') => {
 }
 
 const getBoatOffladsTimeframe = async (boatRegId, from, to) => {
-  const resp = await fetch(`${OFFLOADAPI}/offloads/${boatRegId}/date/${from}/${to}`);
+  const url = `${OFFLOADAPI}/Offloads/${boatRegId}/date/${from}/${to}`;
+  const resp = await fetch(url);
   if (resp.status == '404'){
     return [];
   }
@@ -73,7 +85,7 @@ const getBoatOffladsTimeframe = async (boatRegId, from, to) => {
 }
 
 const getOffloadDetails = async ( date, registrationId ) => {
-  const resp = await fetch(`${OFFLOADAPI}/offloads/details/date/${date}/${registrationId}`);
+  const resp = await fetch(`${OFFLOADAPI}/Offloads/details/date/${date}/${registrationId}`);
   const json = await resp.json();
   return json; 
 }
@@ -84,8 +96,16 @@ const getBoatNameHistory = async ( boatId ) => {
   return json;  
 }
 
+const getFilter = async ( filter, param = '' ) => {
+
+  const resp = await fetch(`${OFFLOADAPI}/sitedata/filters/${filter}/${param}`);
+  const json = await resp.json();
+  return json; 
+}
+
 export {
   getOffloads,
+  getOwners,
   getBoats,
   getBoatByRegistration,
   getBoatOffladsTimeframe,
@@ -93,5 +113,6 @@ export {
   getValue,
   getOffloadDetails,
   getBoatById,
-  getBoatNameHistory
+  getBoatNameHistory,
+  getFilter
 };

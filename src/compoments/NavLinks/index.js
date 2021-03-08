@@ -45,6 +45,12 @@ class NavLinks extends React.Component {
             </NavLink>
             <NavLink
               exact
+              to="/topowners"
+            >
+              Topp fiskefirma
+            </NavLink>
+            <NavLink
+              exact
               to="/contact"
             >
               Kontakt oss

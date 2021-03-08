@@ -16,6 +16,9 @@ import reactGa from 'react-ga';
 import {GOOGLE_ANALITIC_STRING} from './Constants';
 import selectionsContext from './Context/selectionsContext';
 
+import OwnerDetails from './Pages/OwnerDetails';
+import TopOwner from './Pages/TopOwner';
+
 
 
 function App() {
@@ -64,6 +67,10 @@ function App() {
                 <Route exact path="/contact" component={Contact} />
                 <Route exact path="/about" component={About} />
                 <Route exact path="/Search/:term" render={(e) => <Search term={e.match.params.term} />}  />
+
+                <Route exact path="/owner/:ownerId" render={(e) => <OwnerDetails ownerId={e.match.params.ownerId} />} />
+                <Route exact path="/topowners" render={(e) => <TopOwner/>} />
+
                 <Route exact path="/boats/:boatname" render={(e) => <BoatDetails boatname={e.match.params.boatname} />} />
                 <Route exact path="/offloads/:boatId" render={(e) => <OffloadBoatDetails boatId={e.match.params.boatId}/>} />
                 <Route exact path="/offload/:date/:registrationId" render={(e) => <OffloadDetails date={e.match.params.date} registrationId={e.match.params.registrationId}/>} />

@@ -15,7 +15,12 @@ const SearchBar = () => {
       fetch(`${OFFLOADAPI}/search/boats/${searchTerm}`)
         .then((res) => res.json())
         .then((res) => {
-          setFoundBoats(res);
+          if(res == null){
+            setFoundBoats([]);
+          }
+          else{
+            setFoundBoats(res);
+          }
         });
     } else {
       setFoundBoats([]);
