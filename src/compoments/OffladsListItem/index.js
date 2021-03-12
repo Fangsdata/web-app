@@ -8,16 +8,16 @@ const OffloadListItem = ({ item, index }) => (
     <div className="offload-row">
       <p className="offload-index">{index}</p>
       <p className="offload-name">
-        {item.boatName ? item.boatName : item.boatRegistrationId}
+        {item.BoatName ? item.BoatName : item.BoatRegistrationID}
       </p>
       <p className="offload-group">
-        {shortinString(item.boatFishingGear,11)}
+        {shortinString(item.FishingGear,11)}
       </p>
       <p className="offload-group">
-        {`${normalizeLength(item.boatLength)}`}
+        {`${normalizeLength(item.BoatLength)}`}
       </p>
       <p className="offload-group">
-        {normalizeWeight(item.totalWeight)}
+        {normalizeWeight(item.TotalWeight)}
       </p>
     </div>
   </Link>
@@ -25,23 +25,23 @@ const OffloadListItem = ({ item, index }) => (
 
 OffloadListItem.propTypes = {
   item: PropTypes.shape({
-    avrage: PropTypes.number,
-    boatFishingGear: PropTypes.string,
-    boatImage: PropTypes.string,
-    boatLandingState: PropTypes.string,
-    boatLandingTown: PropTypes.string,
-    boatLength: PropTypes.number,
-    boatName: PropTypes.string,
-    boatNationality: PropTypes.string,
-    boatRadioSignalId: PropTypes.string,
-    boatRegistrationId: PropTypes.string,
-    id: PropTypes.number,
-    largestLanding: PropTypes.number,
-    smallest: PropTypes.number,
-    state: PropTypes.string,
-    totalWeight: PropTypes.number,
-    town: PropTypes.string,
-    trips: PropTypes.number,
+    Avrage: PropTypes.number,
+    FishingGear: PropTypes.string,
+    BoatImage: PropTypes.string,
+    BoatLandingState: PropTypes.string,
+    BoatLandingTown: PropTypes.string,
+    BoatLength: PropTypes.number,
+    BoatName: PropTypes.string,
+    BoatNationality: PropTypes.string,
+    BoatRadioSignalID: PropTypes.string,
+    BoatRegistrationID: PropTypes.string,
+    ID: PropTypes.number,
+    LargestLanding: PropTypes.number,
+    Smallest: PropTypes.number,
+    State: PropTypes.string,
+    TotalWeight: PropTypes.number,
+    Town: PropTypes.string,
+    Trips: PropTypes.number,
   }).isRequired,
   index: number.isRequired,
 };

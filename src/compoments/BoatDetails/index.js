@@ -15,6 +15,7 @@ import {
   getBoatLocation,
   getBoatNameHistory,
   getBoatOffladsTimeframe,
+  getBoatsOwners
 } from '../../services/OffloadService';
 import boaticon from './boat.png';
 import selectionsContext from '../../Context/selectionsContext';
@@ -58,7 +59,8 @@ class BoatDetails extends React.Component {
       fromDate: new Date(today.getFullYear(),0), 
       toDate: today,
       today: today,
-      nameHistory: []
+      nameHistory: [],
+      ownerHistory: [],
     };
   }
 
@@ -93,7 +95,7 @@ class BoatDetails extends React.Component {
     getBoatById(boatname)
     .then((boat)=>{
       this.setState({boat: boat, boatDetailLoaded: true});
-        getBoatLocation(boat.radioSignalId)
+        getBoatLocation(boat.RadioSignalID)
           .then(map => {
             if( map !== [] ||
                 map[0]['latitude'] !== undefined ||
@@ -106,6 +108,10 @@ class BoatDetails extends React.Component {
     getBoatNameHistory(boatname)
     .then((names)=>{
       this.setState({nameHistory : names});
+    })
+    getBoatsOwners(boatname)
+    .then((history)=>{
+      this.setState({ownerHistory : history});
     })
 
   }
@@ -145,23 +151,23 @@ class BoatDetails extends React.Component {
       fromDate,
       toDate,
       today,
-      nameHistory
+      nameHistory,
+      ownerHistory
     } = this.state;
-    console.log(boat)
     const {
-      name,
-      state,
-      town,
-      length,
-      weight,
-      builtYear,
-      enginePower,
-      fishingGear,
-      registrationId,
-      radioSignalId,
-      id
+      Name,
+      State,
+      Town,
+      Length,
+      Weight,
+      BuiltYear,
+      EnginePower,
+      FishingGear,
+      RegistrationID,
+      RadioSignalID,
+      ID
     } = boat;
-    
+    console.log("owner ", ownerHistory)
     const { boatname } = this.props;
 
     const {setBoatOffloadPageNo, setBoatOffloadPageCount} = this.context;
@@ -183,33 +189,39 @@ class BoatDetails extends React.Component {
                   <>
                     <img src={boaticon} className="boat-img" alt="boat" />
                     <div className="boat-info">
-                      <p className="boat-header">{ name !== '' ? normalizeCase(name) : boatname }</p>
+                      <p className="boat-header">{ Name !== '' ? normalizeCase(Name) : boatname }</p>
+                      { ownerHistory.length === 0
+                        ? <></>
+                      :<p className="boat-details"> Eieren: <a href={`/owner/${ownerHistory[0].ID}`}>
+                          {`${normalizeCase(ownerHistory[0].Name)}`}
+                        </a>
+                      </p>}
                       <p className="boat-details">
-                        { `Radiokallesignal: ${radioSignalId}` }
+                        { `Radiokallesignal: ${RadioSignalID}` }
                       </p>
                       <p className="boat-details">
-                        { `Registreringsmerke: ${registrationId}` }
+                        { `Registreringsmerke: ${RegistrationID}` }
                       </p>
                       <p className="boat-details">
-                        { `Lengde: ${normalizeLength(length)}` }
+                        { `Lengde: ${normalizeLength(Length)}` }
                       </p>
                       <p className="boat-details">
-                        { `Vekt: ${normalizeWeight(weight * 1000)}` }
+                        { `Vekt: ${normalizeWeight(Weight * 1000)}` }
                       </p>
                       <p className="boat-details">
-                        { `År bygd: ${builtYear !== 0 ? builtYear : 'ikke registrert'}` }
+                        { `År bygd: ${BuiltYear !== 0 ? BuiltYear : 'ikke registrert'}` }
                       </p>
                       <p className="boat-details">
-                        { `Fylke: ${state !== '' ? state : 'ikke registrert'}` }
+                        { `Fylke: ${State !== '' ? State : 'ikke registrert'}` }
                       </p>
                       <p className="boat-details">
-                        { `Kommune: ${town !== '' ? normalizeCase(town) : 'ikke registrert'}` }
+                        { `Kommune: ${Town !== '' ? normalizeCase(Town) : 'ikke registrert'}` }
                       </p>
                       <p className="boat-details">
-                        { `Motor kraft: ${enginePower !== 0 ? `${enginePower} hp` : 'ikke registrert'}` }
+                        { `Motor kraft: ${EnginePower !== 0 ? `${EnginePower} hp` : 'ikke registrert'}` }
                       </p>
                       <p className="boat-details">
-                        { `Redskap: ${fishingGear !== '' ? fishingGear : 'ikke registrer`'}`}
+                        { `Redskap: ${FishingGear !== '' ? FishingGear : 'ikke registrer`'}`}
                       </p>
                       <br />
                       { cleanMapData.length !== 0
@@ -227,6 +239,17 @@ class BoatDetails extends React.Component {
                       {nameHistory.map(({boatName,boatNameChangedDate})=>(<p className="boat-details" >{normalizeDate(boatNameChangedDate)} - {normalizeCase(boatName)}</p>))}</>
                       :<></>
                       }
+                    <br/>
+                    { ownerHistory[1] !== undefined
+                      ? <><p className="boat-details">Tidligere eiere: </p>
+                        {ownerHistory.map((owner)=>(
+                          <p className="boat-details" >{owner.Year} - 
+                            <a href={`/owner/${owner.ID}`}> {normalizeCase(owner.Name)}
+                            </a>
+                           </p>))}</>
+                      :<></>
+                      }
+
                     </div>
                   </>
                 )
@@ -248,7 +271,7 @@ class BoatDetails extends React.Component {
         { cleanMapData.length !== 0
           ? (
             <div className="map-container">
-              <VesselMap lat={mapData[0].latitude} lng={mapData[0].longitude} />
+              <VesselMap mapData={[[mapData[0].latitude,mapData[0].longitude]] }/>
             </div>
           )
           : <></>}
@@ -262,7 +285,7 @@ class BoatDetails extends React.Component {
            <DatePicker
                 selected={fromDate}
                 onChange={(date) => {
-                  const {  toDate } = this.state;
+                  const { toDate } = this.state;
                   this.setState({fromDate: date});
                   this.updateOffloadList( date, toDate );
                 }}
@@ -294,7 +317,7 @@ class BoatDetails extends React.Component {
 
         <LandingsTable
           landings={landings}
-          boatId={id}
+          boatId={ID}
           landingNo={(pageNo - 1) * resultCount}
           boatOffloadLoaded={boatOffloadLoaded}
           boatOffloadError={boatOffloadError}

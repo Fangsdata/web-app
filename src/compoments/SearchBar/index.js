@@ -8,6 +8,7 @@ let timeOut;
 const SearchBar = () => {
   const [search, updateSearch] = useState('');
   const [foundBoats, setFoundBoats] = useState([]);
+  const [foundOwner, setFoundOwner] = useState([]);
   const [isSearchOpen, setSearchStatus] = useState(false);
   
   const UpdateQuickSearch = (searchTerm) => {
@@ -22,8 +23,21 @@ const SearchBar = () => {
             setFoundBoats(res);
           }
         });
+
+      fetch(`${OFFLOADAPI}/search/owners/${searchTerm}`)
+        .then((res) => res.json())
+        .then((res) => {
+          if(res == null){
+            setFoundOwner([]);
+          }
+          else{
+            setFoundOwner(res);
+          }
+        });
+
     } else {
       setFoundBoats([]);
+      setFoundOwner([]);
     }
   };
 
@@ -77,20 +91,36 @@ const SearchBar = () => {
 
           <Link to={`/search/${search}`}><img className="search-icon" src={icon} alt="" /></Link>
         </button>
-        { foundBoats.length !== 0 && !isSearchOpen
+        { foundBoats.length !== 0 && !isSearchOpen || foundOwner.length !== 0 && !isSearchOpen 
           ? (
             <div className="quick-search">
               <div className="line" />
-              { foundBoats.map((boat) => (
+              <p className="search-result" style={{fontWeight: 'bold'}}  >Båter</p>
+              <>{ foundBoats.map((boat) => (
                 <QuickSearchItem
-                  searchItemTitle={`${boat.name} - ${boat.registration_id}`}
-                  id={boat.id}
+                  searchItemTitle={`${boat.Name} - ${boat.RegistrationID}`}
+                  id={boat.ID}
                   ClickedEvent={() => {
                     updateSearch('');
                     setFoundBoats([]);
+                    setFoundOwner([]);
                   }}
+                  
                 />
-              )) }
+              )) }</>
+              <br></br>
+              <p className="search-result" style={{fontWeight: 'bold'}} >Fiskefirma</p>
+              { foundOwner.map((owner) => (
+                <QuickSearchItem
+                  searchItemTitle={`${owner.Fartøyeier}`}
+                  id={owner.EierID}
+                  ClickedEvent={() => {
+                    updateSearch('');
+                    setFoundBoats([]);
+                    setFoundOwner([]);
+                  }
+                }
+                />)) }
               <div className="result-bottom" />
             </div>
           )

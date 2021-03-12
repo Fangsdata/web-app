@@ -21,6 +21,9 @@ const About = () => (
           ikke alle vet det hvordan du får tilgang til denne informasjonen, 
           og det kan være vanskelig å tyde.
           </p>
+
+    <p> Kartdataene våre er fra : Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri</p>
+
           <p>
             Vi ønsker å gi enkel tilgang til denne informasjonen
             på en måte som er forståelig for alle.

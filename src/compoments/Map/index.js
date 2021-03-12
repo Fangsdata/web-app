@@ -2,7 +2,7 @@ import React from 'react';
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { number } from 'prop-types';
+import { array, number } from 'prop-types';
 
 class MapContainer extends React.Component {
   constructor(props) {
@@ -14,25 +14,24 @@ class MapContainer extends React.Component {
 
   render() {
     const { zoom } = this.state;
-    const { lat, lng } = this.props;
+    const { mapData } = this.props;
 
-    const position = [lat, lng];
     // const customMarker = L.icon({ iconUrl: require('./place-24px.svg') });
     return (
-      <Map center={position} zoom={zoom}>
+      <Map center={mapData[0]} zoom={zoom}>
         <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
+          url="https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}"
         />
-        <Marker position={position} />
+        {mapData.map((position)=>(
+          <Marker position={position} />
+        ))}
       </Map>
     );
   }
 }
 
 MapContainer.propTypes = {
-  lat: number.isRequired,
-  lng: number.isRequired,
+  mapData : array.isRequired
 };
 
 

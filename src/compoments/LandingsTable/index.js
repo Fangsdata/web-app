@@ -22,16 +22,16 @@ const LandingsTable = ({
         <>
           { boatOffloadLoaded
             ? landings.map((landing, i) => (
-              <Link to={`/offload/${landing.landingDate}/${boatId} `}>
+              <Link to={`/offload/${landing.LandingDate}/${boatId} `}>
                 <div className="offload-row">
                   <p className="offload-index">
                     {i + 1 + landingNo}
                     .
                   </p>
-                  <p className="offload-name">{normalizeDate(landing.landingDate)}</p>
-                  <p className="offload-group">{normalizeCase(landing.town)}</p>
-                  <p className="offload-group">{landing.state}</p>
-                  <p className="offload-group">{normalizeWeight(landing.totalWeight)}</p>
+                  <p className="offload-name">{normalizeDate(landing.LandingDate)}</p>
+                  <p className="offload-group">{normalizeCase(landing.Town)}</p>
+                  <p className="offload-group">{landing.State}</p>
+                  <p className="offload-group">{normalizeWeight(landing.TotalWeight)}</p>
                 </div>
               </Link>
             ))
@@ -50,7 +50,7 @@ const LandingsTable = ({
             <p className="offload-name"></p>
             <p className="offload-group"></p>
             <p className="offload-group"> Total : </p>
-            <p className="offload-group">{normalizeWeight( landings.reduce((a,b)=>(b.totalWeight + a),0))}</p>
+            <p className="offload-group">{normalizeWeight( landings.reduce((a,b)=>(b.TotalWeight + a),0))}</p>
           </div>
           </a>
   </div>

@@ -8,10 +8,10 @@ const OffladsList = ({ offloads, title,pageNo, updatedOn }) => (
     <div className="offload-header">{title}</div>
     <OffladsListItem
       item={{
-        boatName: 'Navn',
-        boatFishingGear: 'Redskap',
-        boatLength: 'Båt lengde',
-        totalWeight: 'Total vekt',
+        BoatName: 'Navn',
+        FishingGear: 'Redskap',
+        BoatLength: 'Båt lengde',
+        TotalWeight: 'Total vekt',
       }}
       index="#"
     />

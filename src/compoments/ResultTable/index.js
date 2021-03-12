@@ -2,8 +2,8 @@ import { string } from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ResultTable = (({title,headers, footer, items,tag })=>{
-    return( <div className="offload-table">
+const ResultTable = (({title,headers, footer, items,tag,TableContainerClassName })=>{
+    return( <div className={TableContainerClassName} >
     <div className="offload-header">{title}</div>
     <div className="offload-row">
     <p className="offload-index">#</p>
@@ -46,6 +46,7 @@ ResultTable.defaultProps = {
     headers:[],
     items:[],
     tag: "",
+    TableContainerClassName :"offload-table"
 };
 
 

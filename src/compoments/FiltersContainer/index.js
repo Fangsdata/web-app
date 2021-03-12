@@ -15,10 +15,12 @@ const FiltersContainer = ({ inputEvent, allFilters, updateDate }) => {
   const [showDatePicker, setShowDatePicker] = useState(true);
   const [showLandingState, setShowLandingState] = useState(true);
   const [showPersivationMethood, setShowPersivationMethood] = useState(true);
+
   const [monthOrYear, setMonthOrYear] = useState([
     { title: 'måned', checkState: true, value: 'month' },
     { title: 'år', checkState: false, value: 'year' }]);
-  const [isMonth, setIsMonth] = useState(true);
+  
+    const [isMonth, setIsMonth] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
  
   const changeMonthOrYear = (e,updateDate) => {

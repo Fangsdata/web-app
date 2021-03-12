@@ -1,4 +1,3 @@
-import { el } from 'date-fns/locale';
 import { OFFLOADAPI } from '../Constants';
 
 async function sendQuery(inUrl, queryParam) {
@@ -68,8 +67,8 @@ const getBoatLocation = async ( radioSignal ) => {
   return json; 
 }
 
-const getValue = async (key = '') => {
-  const resp = await fetch(`${OFFLOADAPI}/key/${key}`);
+const getValue = async (value = '') => {
+  const resp = await fetch(`${OFFLOADAPI}/sitedata/key/${value}`);
   const json = await resp.text();
   return json;
 }
@@ -97,11 +96,35 @@ const getBoatNameHistory = async ( boatId ) => {
 }
 
 const getFilter = async ( filter, param = '' ) => {
-
   const resp = await fetch(`${OFFLOADAPI}/sitedata/filters/${filter}/${param}`);
   const json = await resp.json();
   return json; 
 }
+
+const getOwnerDetails = async ( id ) => {
+  const resp = await fetch(`${OFFLOADAPI}/owners/${id}`);
+  const json = await resp.json();
+  return json; 
+}
+
+const getOwnerBoats = async ( id, param = "" ) => {
+  const resp = await fetch(`${OFFLOADAPI}/owners/boats/${id}/${param}`);
+  const json = await resp.json();
+  return json; 
+}
+
+const getBoatsOwners = async ( id ) => {
+  const resp = await fetch(`${OFFLOADAPI}/boats/owners/${id}`);
+  const json = await resp.json();
+  return json; 
+}
+
+const searchFor = async ( search='boats', term, results=100, page=1 ) => {
+  const resp = await fetch(`${OFFLOADAPI}/search/${search}/${term}/${results}/${page}`);
+  const json = await resp.json();
+  return json; 
+} 
+
 
 export {
   getOffloads,
@@ -114,5 +137,9 @@ export {
   getOffloadDetails,
   getBoatById,
   getBoatNameHistory,
-  getFilter
+  getFilter,
+  getOwnerDetails,
+  getOwnerBoats,
+  getBoatsOwners,
+  searchFor, 
 };

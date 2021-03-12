@@ -189,8 +189,7 @@ const OffloadDetails = ({ date, registrationId }) => {
                   </div>
                   <div className="map-container">
                     <MapContainer
-                      lat={offloadDetail.mapData[0].latitude}
-                      lng={offloadDetail.mapData[0].longitude}
+                      mapData={[[offloadDetail.mapData[0].latitude, offloadDetail.mapData[0].longitude]]}
                     />
                   </div>
                   <div className="landing-table-container">

@@ -27,17 +27,18 @@ export class GenerateGraphData {
     constructor(data){
         this.data = data;
 
+        console.log(data)
         this.barLabels = this.generateBarLabels();
         this.colors = []; 
         this.barRows = this.generateBarRows();
     };
 
-    reduceData(cutOffPoint = 0.05, cutOffName = 'resten'){
+    reduceData(cutOffPoint = 0.05, cutOffName = 'Resten'){
         this.data = this.data.map(i => {
-            if (typeof(i.fish) === 'object'){
-              i.fish = i.fish.map((j)=> {
-                if( j.weight / i.totalWeight < cutOffPoint ){
-                  j.type = cutOffName;
+            if (typeof(i.Fish) === 'object'){
+              i.Fish = i.Fish.map((j)=> {
+                if( j.Weight / i.TotalWeight < cutOffPoint ){
+                  j.Type = cutOffName;
                   return j;
                 }
                 else {
@@ -67,10 +68,10 @@ export class GenerateGraphData {
                       hoverBackgroundColor: this.colors[len] + 'bb',
                       borderWidth: .5,
                       data: this.data.map((j) => {
-                        if (typeof(j.fish) === 'object'){
-                          return j.fish.reduce((acc, curr ) => {
-                            if (curr.type === i){
-                              return curr.weight + acc;
+                        if (typeof(j.Fish) === 'object'){
+                          return j.Fish.reduce((acc, curr ) => {
+                            if (curr.Type === i){
+                              return curr.Weight + acc;
                             }
                             else{
                               return acc;
@@ -86,10 +87,10 @@ export class GenerateGraphData {
     generateBarRows () {
         let tempBarRows = [];
         this.data.forEach(i => {
-            if (typeof(i.fish) === 'object'){
-              i.fish.forEach( j => {
-                if(!tempBarRows.some( k => k === j.type )){
-                    tempBarRows.push(j.type); 
+            if (typeof(i.Fish) === 'object'){
+              i.Fish.forEach( j => {
+                if(!tempBarRows.some( k => k === j.Type )){
+                    tempBarRows.push(j.Type); 
                 }
               })
             }
@@ -100,7 +101,7 @@ export class GenerateGraphData {
     }
 
     generateBarLabels(){
-        let barLabels = this.data.map((i)=>{ return normalizeDate(i.landingDate)});
+        let barLabels = this.data.map((i)=>{ return normalizeDate(i.LandingDate)});
         return barLabels.reverse();
     }
 

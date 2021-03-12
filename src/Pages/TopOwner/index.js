@@ -27,6 +27,7 @@ function TopOwner() {
         {title:"Nordland",      value:"9400,9499",checkState:false},
         {title:"Finnmark",      value:"9500,9999",checkState:false},
     ]);
+    
     const [fishingGearFilter, setFishingGearFilter] = useState([]);
 
 
@@ -94,6 +95,7 @@ function TopOwner() {
     }
 
     const updateFilters = (newFilters) => {
+
         setSelectedFilters(newFilters);
         updateSelectedList();
     } 
@@ -110,11 +112,11 @@ function TopOwner() {
         else {
             newSelectedFilter[selectedName] = [sel.selected.value];
         }
-
         updateFilters(newSelectedFilter)
     }
     return (
         <div>
+            <h1>Dette er en eksperimentell funksjon, og dataene her kan være feil!</h1>
             <FiltersContainer>
                 <Filter filterName="Fylke">
                     <FilterCheckBox
@@ -136,7 +138,7 @@ function TopOwner() {
                         group="fishingGear"
                     />
                 </Filter>
-                <Filter filterName="Dato">
+               <Filter filterName="Dato">
                     <FilterCheckBox
                             key="monthOrYear"
                             items={monthOrYear}
@@ -171,9 +173,7 @@ function TopOwner() {
                                 showYearPicker
                             />
                             } 
-                </Filter>
-
-
+                        </Filter>
             </FiltersContainer>
             { ownerList.length !== 0
             ? <ResultTable
@@ -184,7 +184,6 @@ function TopOwner() {
             />
             : <LoadingAnimation rowCount={20} 
             containerClass='top-offload-loading-container'/>
-
             }
         </div>
     )
